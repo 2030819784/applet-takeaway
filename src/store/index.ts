@@ -11,3 +11,4 @@ pinia.use(persist)
 export default pinia
 
 export * from './modules/login'
+export * from './modules/member'

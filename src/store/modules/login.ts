@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useLoginStore = defineStore('login', {
   state: () => {
     return {
-      token: '122234',
+      token: '',
     }
   },
 })
