@@ -5,6 +5,13 @@ import userUrl from '@/static/login/logo.png'
 
 let phoneCode: string = ''
 // const memberStore = useMemberStore()
+// 获取用户手机号码
+const getphonenumber = async (e: any) => {
+    if (e.detail.errMsg!.includes('ok')) {
+        phoneCode = e.detail.code!
+        getId()
+    }
+}
 
 
 const getId = () => {
@@ -21,7 +28,12 @@ const getCode = () => {
 }
 const login = (code: string) => {
     return new Promise((resolve) => {
-        const result = postLoginWxMinAPI(code)
+        const data = {
+            code,
+            phoneCode,
+        }
+        console.log(data)
+        const result = postLoginWxMinAPI(data)
         resolve(result)
     })
 }
@@ -57,9 +69,9 @@ const loginSuccess = (profile: any) => {
         <view class="login">
             <!-- 小程序端授权登录 -->
             <!-- #ifdef MP-WEIXIN -->
-            <button class="button phone" @click="getId">
+            <button class="button phone" open-type="getPhoneNumber" @getphonenumber="getphonenumber">
                 <text class="icon icon-phone"></text>
-                微信登录
+                手机号快捷登录
             </button>
         </view>
     </view>

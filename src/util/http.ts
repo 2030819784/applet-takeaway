@@ -17,7 +17,7 @@ const loginStore = useLoginStore()
 // 添加拦截器
 const httpInterceptor = {
 	// 拦截前触发
-	invoke(options : UniApp.RequestOptions) {
+	invoke(options: UniApp.RequestOptions) {
 		// 1. 非 http 开头需拼接地址
 		if (!options.url.startsWith('http')) {
 			options.url = baseURL + options.url
@@ -49,32 +49,32 @@ uni.addInterceptor('uploadFile', httpInterceptor)
  *    3.3 网络错误 -> 提示用户换网络
  */
 
-export const http = async (options : any) => {
-	  return new Promise((resolve, reject) => {
-	    uni.request({
-	      ...options,
-	      // 响应成功
-	      success(res: any) {
-	        if (res.header.authorization) {
-	          uni.setStorageSync('token', res.header.authorization)
-	          loginStore.token = res.header.authorization
-	        }
-	        if (res.data.status !== 200) {
-	          uni.showToast({ icon: 'error', title: '请前往登录' })
-	          uni.navigateTo({
-	            url: '/pages/login/index',
-	          })
-	        } 
-	        resolve(res.data)
-	      },
-	      // 响应失败
-	      fail(err: any) {
-	        uni.showToast({
-	          icon: 'error',
-	          title: '网络错误',
-	        })
-	        reject(err)
-	      },
-	    })
-	  })
-    }
+export const http = async (options: any) => {
+	return new Promise((resolve, reject) => {
+		uni.request({
+			...options,
+			// 响应成功
+			success(res: any) {
+				if (res.header.authorization) {
+					uni.setStorageSync('token', res.header.authorization)
+					loginStore.token = res.header.authorization
+				}
+				if (res.data.status.toString().slice(0, 4) === '1101') {
+					uni.showToast({ icon: 'error', title: '请前往登录' })
+					uni.navigateTo({
+						url: '/pages/login/index',
+					})
+				}
+				resolve(res.data)
+			},
+			// 响应失败
+			fail(err: any) {
+				uni.showToast({
+					icon: 'error',
+					title: '网络错误',
+				})
+				reject(err)
+			},
+		})
+	})
+}
