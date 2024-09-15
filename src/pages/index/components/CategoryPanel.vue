@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type { CategoryItem } from '@/types/home'
-import { onShow } from '@dcloudio/uni-app'
-// import iconUrl from '@/static/images/logo.png'
 // 定义 props 接收数据
 const { list } = defineProps<{ list: CategoryItem[] }>()
 
@@ -49,6 +47,7 @@ const changePages = (item: any) => {
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+
     .icon {
       width: 90rpx;
       height: 90rpx;

@@ -2,26 +2,21 @@
   <view class="navbar" :style="{ paddingTop: safeAreaInsets?.top + 'px' }">
     <!-- logo文字 -->
     <view class="logo">
-      <text class="logo-text">检测平台</text>
+      <text class="logo-text">兜兜校园外卖</text>
     </view>
     <!-- 搜索条 -->
     <view class="search">
       <view class="search_input" @click="changeToSelect">
-        <view class="address">
+        <!-- <view class="address">
           <u-icon width="28rpx" height="28rpx" name="../../../../static/home/address.png"></u-icon>
           <text class="address_text">{{ address }}</text>
           <u-icon width="16rpx" height="16rpx" name="../../../../static/home/dropDown.png"></u-icon>
-        </view>
+        </view> -->
         <view class="line"></view>
         <input type="text" v-model="search" class="input" />
       </view>
       <view class="search_scan">
-        <u-icon
-          width="52rpx"
-          height="52rpx"
-          name="../../../../static/home/scan.png"
-          @click="scanCode"
-        ></u-icon>
+        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/scan.png" @click="scanCode"></u-icon>
       </view>
     </view>
   </view>
@@ -46,9 +41,9 @@ const scanCode = () => {
   })
 }
 const changeToSelect = () => {
-  uni.navigateTo({
-    url: '/pages/sample/sample',
-  })
+  // uni.navigateTo({
+  //   url: '/pages/sample/sample',
+  // })
 }
 </script>
 
@@ -117,10 +112,10 @@ const changeToSelect = () => {
         border-radius: 0rpx 0rpx 0rpx 0rpx;
         margin: 0 10rpx;
         opacity: 1;
-        border: 1rpx solid #999999;
       }
 
       .input {
+        margin-left: 20rpx;
         width: 70%;
       }
     }

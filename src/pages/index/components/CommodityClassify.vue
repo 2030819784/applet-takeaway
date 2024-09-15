@@ -13,7 +13,7 @@
           height: '50px',
           fontSize: '28rpx',
         }" :inactiveStyle="{ color: '#000000', fontSize: '28rpx' }" :current="tabsCurrent"
-          @change="changeCurrent"></u-tabs>
+          @click="changeCurrent"></u-tabs>
       </u-sticky>
     </view>
     <!-- <view v-if="list1?.length == 0">
@@ -66,10 +66,8 @@ const getGoodsListItems = async (id: number) => {
   }
 }
 //切换高亮查询商品
-const changeCurrent = (index: any) => {
-  tabsCurrent.value = index.index
-  if (tabsCurrent.value == index.index) goodsListquery.categoryName = index.name
-  // getGoodsListItems()
+const changeCurrent = (item: any) => {
+  getGoodsListItems(item.id)
 }
 //跳转到商品详情页面
 const changeToGoodsDetail = (item: any) => {
