@@ -1,11 +1,10 @@
 <template>
 	<view class="goods">
-		<view class="goods_image" :style="{ backgroundImage: 'url(' + goods.photoshop + ')' }"
+		<view class="goods_image" :style="{ backgroundImage: 'url(' + goods.goodsPhoto + ')' }"
 			style="background-size: cover; background-position: bottom center"></view>
 		<view class="goods_price">
-			<!-- <view class="price">￥{{ goods.price }}</view> -->
-			<view class="price">{{ goods?.shopName }}</view>
-			<view class="title">{{ goods?.name }}</view>
+			<view class="price">{{ goods.shop.name }}</view>
+			<view class="title">{{ goods.name }}</view>
 		</view>
 		<view class="goods_select">
 			<view class="select">
@@ -34,7 +33,7 @@
 				<view class="top">
 					<img src="https://cdn.uviewui.com/uview/swiper/swiper3.png"
 						style="height: 100rpx; width: 100rpx; margin: 20rpx" />
-					<text>￥<text style="font-size: 60rpx">{{ dataDetail.price }}</text>
+					<text>￥<text style="font-size: 60rpx">{{ goods.price }}</text>
 					</text>
 				</view>
 				<view style="display: flex; flex-direction: row; justify-content: space-between; margin: 20rpx">
@@ -71,29 +70,20 @@ let goods: any = ref({})
 
 onLoad((option: any) => {
 	goods.value = JSON.parse(decodeURIComponent(option.good))
+	console.log(goods.value)
 })
 
 let scene = true
-const dataDetail: any = ref({})
 
 let popupScene = ref(false)
 
 const openPopup = (state: boolean) => {
 	scene = state
-	if (goods.value.skuList.length != 0) {
-		dataDetail.value = goods.value.skuList[0]!
-		dataDetail.value.imgUrl = goods.value.skuList[0]!.imgList[0]?.objName
-	}
 	popupScene.value = true
 }
 
 const closePopup = () => {
 	popupScene.value = false
-}
-
-const chooseDetail = (item: any) => {
-	dataDetail.value = item
-	dataDetail.value.imgUrl = item.imgList[0]?.objName
 }
 
 let number = ref(1)
@@ -111,14 +101,10 @@ const payGoods = async () => {
 	const data: any = {
 		goodsName: goods.value.goodName,
 		number: number.value,
-		price: Decimal.mul(dataDetail.value.price, number.value),
-		skuId: dataDetail.value.skuId,
-		spuId: goods.value.id,
-		shopInfoId: goods.value.shopInfoId,
-		imgUrl: dataDetail.value.imgUrl,
+		price: Decimal.mul(goods.value.price, number.value),
+		shopId: goods.value.shopId,
 		address: goods.value.shopDetailedAddress,
 	}
-	console.log(data.address)
 	uni.navigateTo({
 		url: '/pages/payment/payment?goods=' + encodeURIComponent(JSON.stringify(data)),
 	})
@@ -129,10 +115,9 @@ const addToCart = async () => {
 	const data: any = {
 		goodsName: goods.value.goodName,
 		number: number.value,
-		price: Decimal.mul(dataDetail.value.price, number.value),
-		skuId: dataDetail.value.skuId,
-		spuId: goods.value.id,
-		shopInfoId: goods.value.shopInfoId,
+		price: Decimal.mul(goods.value.price, number.value),
+		shopId: goods.value.shopId,
+		address: goods.value.shopDetailedAddress,
 	}
 	const result: any = await addCartAPI(data)
 	if (result.code === 200) {

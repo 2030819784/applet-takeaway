@@ -61,7 +61,7 @@ const changeCurrent = (item: any) => {
 //跳转到商品详情页面
 const changeToGoodsDetail = (item: any) => {
   const data = toRaw(item)
-  data.photoshop = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
+  data.goodsPhoto = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
   uni.navigateTo({
     url: '/pages/shops/shops?data=' + encodeURIComponent(JSON.stringify(data)),
   })

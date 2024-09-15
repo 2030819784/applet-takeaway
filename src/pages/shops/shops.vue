@@ -3,7 +3,7 @@
     <view class="goods_price">
       <view class="price">{{ shop.name }}</view>
     </view>
-    <view class="goods_select" :style="{ backgroundImage: 'url(' + shop.photoshop + ')' }" v-for="item in goods"
+    <view class="goods_select" :style="{ backgroundImage: 'url(' + shop.goodsPhoto + ')' }" v-for="item in goods"
       :key="item.id" @click="changeToGoodsDetail(item)">
       <text>{{ item.name }}: ￥ {{ item.price }}</text>
     </view>
@@ -31,7 +31,7 @@ const getDetail = async (id: string) => {
 const changeToGoodsDetail = (item: any) => {
   const data = toRaw(item)
   data.photoshop = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
-  data.shopName = shop.value.name
+  data.shop = shop.value
   uni.navigateTo({
     url: '/pages/goods/goods?good=' + encodeURIComponent(JSON.stringify(data)),
   })
