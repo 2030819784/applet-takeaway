@@ -65,7 +65,7 @@
 			},
 			{
 				"text": "我的",
-				"pagePath": "pages/user/index",
+				"pagePath": "pages/login/index",
 				"iconPath": "static/tabs/user_default .png",
 				"selectedIconPath": "static/tabs/user_selected.png"
 			}
