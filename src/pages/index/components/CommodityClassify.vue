@@ -12,8 +12,7 @@
           paddingRight: '15px',
           height: '50px',
           fontSize: '28rpx',
-        }" :inactiveStyle="{ color: '#000000', fontSize: '28rpx' }" :current="tabsCurrent"
-          @click="changeCurrent"></u-tabs>
+        }" :inactiveStyle="{ color: '#000000', fontSize: '28rpx' }" @click="changeCurrent"></u-tabs>
       </u-sticky>
     </view>
     <!-- <view v-if="list1?.length == 0">
@@ -22,33 +21,23 @@
     <view v-if="resultItems?.list?.length == 0">
       <u-empty mode="data"></u-empty>
     </view>
-    <view class="commodityDes" v-for="item in resultItems?.list" :key="item.id">
-      <text @click="changeToGoodsDetail(item)">{{ item.name }}</text>
-      <!-- <image :src="item.imgList[0]?.objName" @click="changeToGoodsDetail(item)"></image> -->
+    <view @click="changeToGoodsDetail(item)" class="commodityDes" v-for="item in resultItems" :key="item.id">
+      <text style="position: absolute;left: 30rpx;top: 50rpx;font-size: 40rpx;">{{ item.name }}</text>
+      <image src="https://cdn.uviewui.com/uview/swiper/swiper3.png"></image>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { getGoodsCategoryListAPI, getGoodsListsAPI, getShopListAPI } from '@/services/home'
-import type { goodsListParams } from '@/types/home'
-import { onLoad, onShow, onTabItemTap } from '@dcloudio/uni-app'
-import { onBeforeMount, ref } from 'vue'
+import { getGoodsCategoryListAPI, getShopListAPI } from '@/services/home'
+import { onShow } from '@dcloudio/uni-app'
+import { ref, toRaw } from 'vue'
 //首页商品分类
 const list1 = ref()
 
-//当前高亮
-let tabsCurrent = ref(0)
-//首次渲染高亮名称
-let categoryName: any = ref('')
-//接收返回的商品列表
+//接收返回的商铺列表
 const resultItems = ref()
-//获取商品列表参数
-const goodsListquery: goodsListParams = {
-  page: 1,
-  pageSize: 0,
-  categoryName: categoryName,
-}
+
 //获取商品分类
 const getCategoryList = async () => {
   const result: any = await getGoodsCategoryListAPI('shop_type')
@@ -65,30 +54,22 @@ const getGoodsListItems = async (id: number) => {
     resultItems.value = result.data
   }
 }
-//切换高亮查询商品
+// 查询对应分类商铺
 const changeCurrent = (item: any) => {
   getGoodsListItems(item.id)
 }
 //跳转到商品详情页面
 const changeToGoodsDetail = (item: any) => {
+  const data = toRaw(item)
+  data.photoshop = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
   uni.navigateTo({
-    url:
-      '/pages/goods/goods?item=' +
-      item.id +
-      '&imgList=' +
-      encodeURIComponent(JSON.stringify(item.imgList[0].objName)) +
-      '&address=' +
-      decodeURIComponent(JSON.stringify(item.shopDetailedAddress)),
+    url: '/pages/shops/shops?data=' + encodeURIComponent(JSON.stringify(data)),
   })
 }
 
 onShow(() => {
-  tabsCurrent.value = 0
   getCategoryList()
 })
-// onLoad(() => {
-//   getGoodsListItems()
-// })
 </script>
 
 <style lang="scss" scoped>
@@ -112,6 +93,7 @@ onShow(() => {
     background: #d9d9d9;
     box-shadow: 0rpx 8rpx 8rpx 0rpx #b3b3b3;
     border-radius: 8rpx 8rpx 8rpx 8rpx;
+    position: relative;
   }
 }
 </style>

@@ -1,49 +1,39 @@
 <template>
   <view class="goods">
     <view class="goods_price">
-      <view class="price">{{ name }}</view>
+      <view class="price">{{ shop.name }}</view>
     </view>
-    <view
-      class="goods_select"
-      v-for="item in goods"
-      :key="item.id"
-      @click="changeToGoodsDetail(item)"
-    >
-      <image :src="item.imgList[0].objName" mode=""></image>
-      <text>{{ item.goodsName }}</text>
+    <view class="goods_select" :style="{ backgroundImage: 'url(' + shop.photoshop + ')' }" v-for="item in goods"
+      :key="item.id" @click="changeToGoodsDetail(item)">
+      <text>{{ item.name }}: ￥ {{ item.price }}</text>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { getShopsMessageAPI } from '@/services/home'
+import { getGoodsListAPI } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { ref, toRaw } from 'vue'
 
-const goods: any = ref({})
-let name = ''
+const shop: any = ref({})
+const goods: any = ref([])
+
 onLoad((option: any) => {
-  name = JSON.parse(option.name)
-  detailedAddress = JSON.parse(decodeURIComponent(option!.detailedAddress))
-  getDetail(parseInt(option.item))
+  shop.value = JSON.parse(decodeURIComponent(option.data))
+  getDetail(shop.value.id)
 })
-const getDetail = async (data: number) => {
-  const result: any = await getShopsMessageAPI(data)
+const getDetail = async (id: string) => {
+  const result: any = await getGoodsListAPI(id)
   if (result.code == 200) {
     goods.value = result.data
   }
 }
-
-let detailedAddress = ''
 const changeToGoodsDetail = (item: any) => {
+  const data = toRaw(item)
+  data.photoshop = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
+  data.shopName = shop.value.name
   uni.navigateTo({
-    url:
-      '/pages/goods/goods?item=' +
-      item.id +
-      '&imgList=' +
-      encodeURIComponent(JSON.stringify(item.imgList[0].objName)) +
-      '&address=' +
-      decodeURIComponent(JSON.stringify(detailedAddress)),
+    url: '/pages/goods/goods?good=' + encodeURIComponent(JSON.stringify(data)),
   })
 }
 </script>
@@ -84,20 +74,21 @@ const changeToGoodsDetail = (item: any) => {
   .goods_select {
     margin: 24rpx 24rpx;
     background-color: #ffffff;
-    height: 600rpx;
+    height: 340rpx;
     border-radius: 10rpx;
     padding: 15rpx 15rpx;
 
     image {
       display: flex;
-      height: 90%;
+      height: 80%;
       border-radius: 10rpx;
     }
 
     text {
-      display: block;
-      text-align: center;
+      display: inline-block;
+      font-size: 32rpx;
       margin-top: 16rpx;
+
     }
   }
 }

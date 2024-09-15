@@ -6,20 +6,12 @@ export const getCarouselListAPI = () => {
     url: '/slideshow/list',
   })
 }
-//获取基本商品信息
-export const getGoodsListAPI = (data: any) => {
+//获取基本商品信息---
+export const getGoodsListAPI = (id: string) => {
   return http({
-    method: 'POST',
-    url: '/shopInfo/listByApp',
-    data,
-  })
-}
-//获取基本商品信息2
-export const getGoodsListsAPI = (data: any) => {
-  return http({
-    method: 'POST',
-    url: '/goods/list',
-    data,
+    method: 'GET',
+    //1 上架  不传 默认所有
+    url: `/goods/list?shopId=${id}&isPutAway=1`,
   })
 }
 //获取商品分类---
@@ -44,12 +36,11 @@ export const getShopListAPI = (id: number) => {
     url: `/shop/list?typeId=${id}`,
   })
 }
-
-//获取商铺信息
-export const getShopsMessageAPI = (id: number) => {
+//根据商铺id获取商铺信息---
+export const getShopMessageAPI = (id: number) => {
   return http({
     method: 'GET',
-    url: `/goods/detailedSpu/${id}`,
+    url: `/shop/info?shopId=${id}`,
   })
 }
 
