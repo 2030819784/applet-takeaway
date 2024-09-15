@@ -1,6 +1,6 @@
 {
-  "name": "jc-applet",
-  "appid": "",
+  "name": "applet-takeaway",
+  "appid": "wxc6366579e950d692",
   "description": "",
   "versionName": "1.0.0",
   "versionCode": 1,
@@ -50,7 +50,7 @@
   "quickapp": {},
   /* 小程序特有相关 */
   "mp-weixin": {
-    "appid": "wxc0fd4ebe3a18f2db",
+    "appid": "wxc6366579e950d692",
     "setting": {
       "urlCheck": false
     },
@@ -73,7 +73,11 @@
         "desc": "上传文件的权限"
       }
     },
-    "requiredPrivateInfos": ["getLocation", "chooseLocation", "choosePoi"],
+    "requiredPrivateInfos": [
+      "getLocation",
+      "chooseLocation",
+      "choosePoi"
+    ],
     "cloudfunctionRoot": "cloudfunctions/"
   },
   "mp-alipay": {
