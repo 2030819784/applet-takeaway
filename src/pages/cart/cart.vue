@@ -5,11 +5,7 @@
     <view v-if="items.length != 0">
       <view class="content">
         <text class="edit" @click="manageShop">编辑</text>
-        <checkbox-group
-          @change="checkboxChange"
-          @touchstart="sceneComeBackStart"
-          @touchend="sceneComeBackEnd"
-        >
+        <checkbox-group @change="checkboxChange" @touchstart="sceneComeBackStart" @touchend="sceneComeBackEnd">
           <label v-for="item in items" :key="item.id">
             <view class="shoplist">
               <checkbox class="round" :value="item.id" :checked="item.checked" style="width: 100%">
@@ -18,11 +14,9 @@
                     <image class="img" :src="item.imgList[0]?.objName"></image>
                   </view>
                   <view class="item-right">
-                    <text class="right-top"
-                      >{{ item.goodsName }}({{
-                        item.shopDetailedAddress == null ? '采样' : '检测'
-                      }})</text
-                    >
+                    <text class="right-top">{{ item.goodsName }}({{
+                      item.shopDetailedAddress == null ? '采样' : '检测'
+                    }})</text>
                     <view class="right-bottom">
                       <view style="color: red">
                         <text style="font-size: 24rpx">￥</text>
@@ -60,17 +54,11 @@
           </checkbox-group>
           <view class="content-text">
             <text style="font-size: 28rpx; color: #999999">合计： </text>
-            <text style="color: red; font-size: 24rpx"
-              >￥
+            <text style="color: red; font-size: 24rpx">￥
               <text style="color: red; font-size: 48rpx">{{ totalPrice }}</text>
             </text>
           </view>
-          <button
-            v-if="!showEdit"
-            class="pay-button"
-            @click="payment"
-            :disabled="finalData.length == 0"
-          >
+          <button v-if="!showEdit" class="pay-button" @click="payment" :disabled="finalData.length == 0">
             <text class="pay-text"> 去付款({{ totalNumber }}) </text>
           </button>
           <template v-else>
@@ -98,11 +86,7 @@
 		</view> -->
       </view>
     </view>
-    <view
-      class="content"
-      v-else
-      style="display: flex; align-items: center; justify-content: center; margin-top: 40%"
-    >
+    <view class="content" v-else style="display: flex; align-items: center; justify-content: center; margin-top: 40%">
       <image src="../../static/images/none.png" style="height: 600rpx; width: 400rpx"></image>
       <view class="bottom">
         <button class="shop-button" @click="shop">去逛逛</button>

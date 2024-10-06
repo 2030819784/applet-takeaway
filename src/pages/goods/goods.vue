@@ -1,6 +1,6 @@
 <template>
 	<view class="goods">
-		<view class="goods_image" :style="{ backgroundImage: 'url(' + goods.goodsPhoto + ')' }"
+		<view class="goods_image" :style="{ backgroundImage: `url(${image})` }"
 			style="background-size: cover; background-position: bottom center"></view>
 		<view class="goods_price">
 			<view class="price">{{ goods.shop.name }}</view>
@@ -18,10 +18,7 @@
 		</view>
 		<view class="goods_bottom">
 			<view class="bottom1">
-				<up-button text="去付款" color="orange" shape="circle" @click="openPopup(false)"></up-button>
-			</view>
-			<view class="bottom2">
-				<up-button text="加入购物车" color="limegreen" shape="circle" @click="openPopup(true)"></up-button>
+				<up-button text="去付款" color="orange" shape="circle" @click="openPopup"></up-button>
 			</view>
 		</view>
 	</view>
@@ -32,13 +29,13 @@
 			<view style="height: 1000rpx">
 				<view class="top">
 					<img src="https://cdn.uviewui.com/uview/swiper/swiper3.png"
-						style="height: 100rpx; width: 100rpx; margin: 20rpx" />
+						style="height: 200rpx; width: 200rpx; margin: 20rpx" />
 					<text>￥<text style="font-size: 60rpx">{{ goods.price }}</text>
 					</text>
 				</view>
 				<view style="display: flex; flex-direction: row; justify-content: space-between; margin: 20rpx">
 					<text>购买数量</text>
-					<view style="width: 100rpx">
+					<view style="width: 100rpx;margin-right: 40rpx;">
 						<text class="interval" style="padding: 0 10rpx 0 10rpx" @click.stop="decrease">-</text>
 						<text class="interval" style="padding: 0 10rpx 0 10rpx">{{ number }}</text>
 						<text class="interval" style="padding: 0 10rpx 0 10rpx" @click.stop="increase">+</text>
@@ -46,13 +43,12 @@
 				</view>
 				<view style="height: 120rpx; width: 100%"></view>
 				<view class="bottom" style="position: fixed; bottom: 0; width: 100%; text-align: center">
-					<text>现在付款,30分钟内送达</text>
+					<text>现在付款,50分钟内送达</text>
 					<button style="
               margin-top: 10rpx;
               border-radius: 10rpx;
               background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);
-            " @click="scene ? addToCart() : payGoods()">
-						{{ scene ? '确认' : '付款' }}
+            " @click="payGoods()">付款
 					</button>
 				</view>
 			</view>
@@ -67,18 +63,15 @@ import { ref } from 'vue'
 import Decimal from 'decimal.js'
 
 let goods: any = ref({})
+const image = '../../static/images/goodsBackground.png'
 
 onLoad((option: any) => {
 	goods.value = JSON.parse(decodeURIComponent(option.good))
-	console.log(goods.value)
 })
-
-let scene = true
 
 let popupScene = ref(false)
 
-const openPopup = (state: boolean) => {
-	scene = state
+const openPopup = () => {
 	popupScene.value = true
 }
 
@@ -99,11 +92,13 @@ const increase = () => {
 //付款
 const payGoods = async () => {
 	const data: any = {
-		goodsName: goods.value.goodName,
+		shopName: goods.value.shop.name,
+		name: goods.value.name,
 		number: number.value,
-		price: Decimal.mul(goods.value.price, number.value),
-		shopId: goods.value.shopId,
-		address: goods.value.shopDetailedAddress,
+		totalPrice: Decimal.mul(goods.value.price, number.value),
+		price: goods.value.price,
+		shopId: goods.value.shop.id,
+		goodsId: goods.value.id
 	}
 	uni.navigateTo({
 		url: '/pages/payment/payment?goods=' + encodeURIComponent(JSON.stringify(data)),
@@ -111,28 +106,28 @@ const payGoods = async () => {
 }
 
 //加入购物车
-const addToCart = async () => {
-	const data: any = {
-		goodsName: goods.value.goodName,
-		number: number.value,
-		price: Decimal.mul(goods.value.price, number.value),
-		shopId: goods.value.shopId,
-		address: goods.value.shopDetailedAddress,
-	}
-	const result: any = await addCartAPI(data)
-	if (result.code === 200) {
-		popupScene.value = false
-		uni.showToast({
-			icon: 'success',
-			title: '添加购物车成功',
-		})
-	} else {
-		uni.showToast({
-			icon: 'error',
-			title: result.msg,
-		})
-	}
-}
+// const addToCart = async () => {
+// 	const data: any = {
+// 		goodsName: goods.value.goodName,
+// 		number: number.value,
+// 		price: Decimal.mul(goods.value.price, number.value),
+// 		shopId: goods.value.shopId,
+// 		address: goods.value.shopDetailedAddress,
+// 	}
+// 	const result: any = await addCartAPI(data)
+// 	if (result.code === 200) {
+// 		popupScene.value = false
+// 		uni.showToast({
+// 			icon: 'success',
+// 			title: '添加购物车成功',
+// 		})
+// 	} else {
+// 		uni.showToast({
+// 			icon: 'error',
+// 			title: result.msg,
+// 		})
+// 	}
+// }
 </script>
 
 <style lang="scss" scoped>

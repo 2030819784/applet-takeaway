@@ -7,7 +7,7 @@ export type goodsType = {
 export type goodsListType = {
   checked?: boolean
   createdAt?: number
-  goodsName: string
+  name: string
   id?: number
   number: number
   price: number

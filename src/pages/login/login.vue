@@ -4,7 +4,6 @@ import { useCertification, useMemberStore, useRolesStore } from '@/stores'
 import userUrl from '@/static/images/logo.png'
 import { reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { isCertificationAPI } from '@/services/user'
 import { log } from 'console'
 
 let phoneCode: string = ''
@@ -80,24 +79,7 @@ const checkRoles = () => {
   const rolesStore = useRolesStore()
   rolesStore.setRoles(isRoles)
 }
-const isCertification = async () => {
-  let res: any = await isCertificationAPI()
-  if (res.code == 200) {
-    if (res.data.exists) {
-      if (res.data.userCertification.gender == 0) {
-        res.data.userCertification.gender = '女'
-      } else if (res.data.userCertification.gender == 1) {
-        res.data.userCertification.gender = '男'
-      }
-      let date = new Date(res.data.userCertification.birthdate)
-      let YY = date.getFullYear()
-      let MM = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-      let DD = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-      res.data.userCertification.birthdate = YY + '-' + MM + '-' + DD
-      useCertification().setCertification(res.data)
-    }
-  }
-}
+
 const loginSuccess = (profile: any) => {
   uni.removeStorageSync('Certification')
   if (profile.code === 200) {
@@ -112,8 +94,6 @@ const loginSuccess = (profile: any) => {
         url: '/pages/index/index',
       })
     }, 500)
-    //判断用户是否实名认证
-    isCertification()
   } else {
     uni.showToast({
       icon: 'error',

@@ -28,14 +28,14 @@
 				"navigationBarTitleText": "登录"
 			}
 		},
-		{
-			"path": "pages/cart/cart",
-			"style": {
-				"navigationStyle": "custom",
-				"navigationBarTitleText": "购物车",
-				"enablePullDownRefresh": true
-			}
-		},
+		// {
+		// 	"path": "pages/cart/cart",
+		// 	"style": {
+		// 		"navigationStyle": "custom",
+		// 		"navigationBarTitleText": "购物车",
+		// 		"enablePullDownRefresh": true
+		// 	}
+		// },
 		{
 			"path": "pages/scanCode/scanCode",
 			"style": {
@@ -314,18 +314,19 @@
 		"selectedColor": "#27ba9b",
 		"backgroundColor": "#fff",
 		"borderStyle": "white",
-		"list": [{
+		"list": [
+			{
 				"text": "首页",
 				"pagePath": "pages/index/index",
 				"iconPath": "static/tabs/home_default.png",
 				"selectedIconPath": "static/tabs/home_selected.png"
 			},
-			{
-				"text": "购物车",
-				"pagePath": "pages/cart/cart",
-				"iconPath": "static/tabs/cart_default.png",
-				"selectedIconPath": "static/tabs/cart_selected.png"
-			},
+			// {
+			// 	"text": "购物车",
+			// 	"pagePath": "pages/cart/cart",
+			// 	"iconPath": "static/tabs/cart_default.png",
+			// 	"selectedIconPath": "static/tabs/cart_selected.png"
+			// },
 			{
 				"text": "订单",
 				"pagePath": "pages/list/list",

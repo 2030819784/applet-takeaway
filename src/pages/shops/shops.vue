@@ -3,9 +3,14 @@
     <view class="goods_price">
       <view class="price">{{ shop.name }}</view>
     </view>
-    <view class="goods_select" :style="{ backgroundImage: 'url(' + shop.goodsPhoto + ')' }" v-for="item in goods"
-      :key="item.id" @click="changeToGoodsDetail(item)">
-      <text>{{ item.name }}: ￥ {{ item.price }}</text>
+    <view class="goods_select" v-for="item in goods" :key="item.id" @click="changeToGoodsDetail(item)">
+      <image style="border-radius: 20rpx" src="../../static/images/zisu.png"></image>
+      <view style="width: 1400rpx; margin-left: 20rpx">
+        <text style="font-size: 40rpx; margin-top: 40rpx">{{ item.name }}</text>
+        <view style="margin-left: 40rpx">
+          <text>￥ {{ item.price }}</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -20,6 +25,7 @@ const goods: any = ref([])
 
 onLoad((option: any) => {
   shop.value = JSON.parse(decodeURIComponent(option.data))
+  console.log(shop.goodsPhoto)
   getDetail(shop.value.id)
 })
 const getDetail = async (id: string) => {
@@ -72,17 +78,21 @@ const changeToGoodsDetail = (item: any) => {
   }
 
   .goods_select {
-    margin: 24rpx 24rpx;
-    background-color: #ffffff;
-    height: 340rpx;
-    border-radius: 10rpx;
-    padding: 15rpx 15rpx;
+    margin: 0 5% 30rpx 5%;
+    height: 228rpx;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    box-shadow: 0rpx 8rpx 8rpx 0rpx #b3b3b3;
+    border-radius: 8rpx 8rpx 8rpx 8rpx;
+    position: relative;
 
-    image {
-      display: flex;
-      height: 80%;
-      border-radius: 10rpx;
-    }
+    // image {
+    //   display: flex;
+    //   height: 80%;
+    //   border-radius: 10rpx;
+    // }
 
     text {
       display: inline-block;

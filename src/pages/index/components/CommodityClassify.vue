@@ -22,8 +22,19 @@
       <u-empty mode="data"></u-empty>
     </view>
     <view @click="changeToGoodsDetail(item)" class="commodityDes" v-for="item in resultItems" :key="item.id">
-      <text style="position: absolute;left: 30rpx;top: 50rpx;font-size: 40rpx;">{{ item.name }}</text>
-      <image src="https://cdn.uviewui.com/uview/swiper/swiper3.png"></image>
+      <image style="border-radius: 20rpx;" src="../../../static/images/xicha.png"></image>
+      <view style="width: 1400rpx">
+        <text style="font-size: 40rpx;margin: 40rpx;padding: 40rpx,0;">{{ item.name }}</text>
+        <view style="margin-left: 40rpx;margin-top: 20rpx;">
+          <text>
+            <text style="color: orange;font-size: 20px;">4.8分</text>
+            <text style="font-weight: 100"> 月售200+ 人均20</text>
+          </text>
+        </view>
+        <view style="margin-left: 40rpx;margin-top: 20rpx;">
+          <text style="font-weight: 100">起送 ￥15 配送 约￥0.5</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
@@ -90,7 +101,7 @@ onShow(() => {
     display: flex;
     justify-content: space-between;
     overflow: hidden;
-    background: #d9d9d9;
+    // background: #d9d9d9;
     box-shadow: 0rpx 8rpx 8rpx 0rpx #b3b3b3;
     border-radius: 8rpx 8rpx 8rpx 8rpx;
     position: relative;
