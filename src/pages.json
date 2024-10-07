@@ -44,6 +44,14 @@
 			}
 		},
 		{
+			"path": "pages/addGoods/index",
+			"style": {
+				"navigationBarTitleText": "添加商品",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationStyle": "custom",
@@ -65,44 +73,6 @@
 				"navigationBarBackgroundColor": "#01b575",
 				"enablePullDownRefresh": true,
 				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/list/orderInfo",
-			"style": {
-				// "navigationStyle": "custom",
-				"navigationBarTitleText": "订单详情",
-				"navigationBarBackgroundColor": "#01b575"
-			}
-		},
-		{
-			"path": "pages/personalInfo/personalInfo",
-			"style": {
-				"navigationBarTitleText": "信息登记"
-				// "enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/medicalReport/medicalReport",
-			"style": {
-				"navigationBarTitleText": "医检报告",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/narcoticsReport/narcoticsReport",
-			"style": {
-				"navigationBarTitleText": "毒检列表",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#01b575",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
-			"path": "pages/affiliatedPerson/affiliatedPerson",
-			"style": {
-				"navigationBarTitleText": "联系人",
-				"enablePullDownRefresh": false
 			}
 		},
 		{
@@ -140,15 +110,6 @@
 			}
 		},
 		{
-			"path": "pages/narcoticsReport/narcoticsRecord",
-			"style": {
-				"navigationBarTitleText": "毒检记录",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#00b26a",
-				"navigationBarTextStyle": "white"
-			}
-		},
-		{
 			"path": "pages/map/map",
 			"style": {
 				"navigationBarTitleText": "地图",
@@ -162,128 +123,6 @@
 				"navigationBarTitleText": "待付款",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#3BCE7D"
-			}
-		},
-		{
-			"path": "pages/reservation/reservation",
-			"style": {
-				"navigationBarTitleText": "预约采样",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#3BCE7D"
-			}
-		},
-		{
-			"path": "pages/receipt/receipt",
-			"style": {
-				"navigationBarTitleText": "发票",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/receiptDetail/receiptDetail",
-			"style": {
-				"navigationBarTitleText": "发票详情",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/list/addOrder/addOrder",
-			"style": {
-				"navigationBarTitleText": "添加订单",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/list/completeOrder/completeOrder",
-			"style": {
-				"navigationBarTitleText": "",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/antiDrugProduct/antiDrugProduct",
-			"style": {
-				"navigationBarTitleText": "缉毒产品",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/logisticsList/logisticsList",
-			"style": {
-				"navigationBarTitleText": "物流列表",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#19C375"
-			}
-		},
-		{
-			"path": "pages/logisticDetail/logisticDetail",
-			"style": {
-				"navigationBarTitleText": "物流详情",
-				"enablePullDownRefresh": false,
-				"navigationBarBackgroundColor": "#19C375"
-			}
-		},
-		{
-			"path": "pages/antiDrugProduct/antiDrugGoods/antiDrugGoods",
-			"style": {
-				"navigationBarTitleText": "产品列表",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/antiDrugProduct/antiDrugGoodsDetail/antiDrugGoodsDetail",
-			"style": {
-				"navigationBarTitleText": "产品详情",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/list/hairDetection/hairDetection",
-			"style": {
-				"navigationBarTitleText": "毛发尿液检测",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/list/sewageDetection/sewageDetection",
-			"style": {
-				"navigationBarTitleText": "污水监测",
-				"enablePullDownRefresh": false
-			}
-		},
-		// {
-		//   "path": "pages/list/comfirmIdentity/comfirmIdentity",
-		//   "style": {
-		//     "navigationBarTitleText": "身份确认",
-		//     "enablePullDownRefresh": false
-		//   }
-		// },
-		{
-			"path": "pages/medicalReport/medicalRecord/medicalRecord",
-			"style": {
-				"navigationBarTitleText": "医检记录",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/statistics/statistics",
-			"style": {
-				"navigationBarTitleText": "统计图",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/affiliatedPerson/affiliatedDetial/affiliatedDetial",
-			"style": {
-				"navigationBarTitleText": "联系人详情",
-				"enablePullDownRefresh": false
-			}
-		},
-		{
-			"path": "pages/affiliatedPerson/addAffiliatedPerson/addAffiliatedPerson",
-			"style": {
-				"navigationBarTitleText": "添加联系人",
-				"enablePullDownRefresh": false
 			}
 		},
 		{

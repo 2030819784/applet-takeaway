@@ -274,39 +274,29 @@ const judgeMentGoods = () => {
 }
 
 const payment = () => {
-  if (uni.getStorageSync('Certification')) {
-    if (judgeMentGoods()) {
-      const price = totalPrice.value
-      let checkAddress = ''
-      if (finalData.length > 1) {
-        //同时购买采样和检测商品
-        for (let key in finalData) {
-          if (finalData[key].shopDetailedAddress != null)
-            checkAddress = finalData[key].shopDetailedAddress
-        }
-      } else if (finalData.length == 1)
-        //只购买一件商品
-        checkAddress = finalData[0].shopDetailedAddress
+  if (judgeMentGoods()) {
+    const price = totalPrice.value
+    let checkAddress = ''
+    if (finalData.length > 1) {
+      //同时购买采样和检测商品
+      for (let key in finalData) {
+        if (finalData[key].shopDetailedAddress != null)
+          checkAddress = finalData[key].shopDetailedAddress
+      }
+    } else if (finalData.length == 1)
+      //只购买一件商品
+      checkAddress = finalData[0].shopDetailedAddress
 
-      uni.navigateTo({
-        url:
-          '/pages/payment/payment?cart=' +
-          encodeURIComponent(JSON.stringify(finalData)) +
-          '&totalPrice=' +
-          JSON.stringify(price) +
-          '&totalNumber=' +
-          JSON.stringify(totalNumber.value) +
-          '&checkAddress=' +
-          decodeURIComponent(JSON.stringify(checkAddress)),
-      })
-    }
-  } else {
-    uni.showToast({
-      icon: 'error',
-      title: '请实名',
-    })
     uni.navigateTo({
-      url: '/pages/personalInfo/personalInfo',
+      url:
+        '/pages/payment/payment?cart=' +
+        encodeURIComponent(JSON.stringify(finalData)) +
+        '&totalPrice=' +
+        JSON.stringify(price) +
+        '&totalNumber=' +
+        JSON.stringify(totalNumber.value) +
+        '&checkAddress=' +
+        decodeURIComponent(JSON.stringify(checkAddress)),
     })
   }
 }

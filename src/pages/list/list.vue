@@ -6,39 +6,25 @@
     <view class="content">
       <view class="orderForm_tabs">
         <u-sticky>
-          <u-tabs
-            :list="tabsList"
-            lineWidth="24"
-            lineHight="6"
-            lineColor="#fff"
-            :activeStyle="{
-              color: '#ffffff',
-              fontWeight: '500',
-              fontFamily: 'PingFang HK-Medium, PingFang HK',
-              fontSize: '32rpx',
-            }"
-            :itemStyle="{
-              paddingLeft: '15px',
-              paddingRight: '15px',
-              height: '64px',
-              fontSize: '44rpx',
-            }"
-            :inactiveStyle="{ color: '#ffffff', fontWeight: '400', fontSize: '28rpx' }"
-            :current="tabsCurrent"
-            @change="changeCurrent"
-          ></u-tabs>
+          <u-tabs :list="tabsList" lineWidth="24" lineHight="6" lineColor="#fff" :activeStyle="{
+            color: '#ffffff',
+            fontWeight: '500',
+            fontFamily: 'PingFang HK-Medium, PingFang HK',
+            fontSize: '32rpx',
+          }" :itemStyle="{
+            paddingLeft: '15px',
+            paddingRight: '15px',
+            height: '64px',
+            fontSize: '44rpx',
+          }" :inactiveStyle="{ color: '#ffffff', fontWeight: '400', fontSize: '28rpx' }" :current="tabsCurrent"
+            @change="changeCurrent"></u-tabs>
         </u-sticky>
       </view>
       <view>
         <view v-if="loading">
           <view class="loading-overlay">
             <view class="loading">
-              <u-loading-icon
-                text="加载中"
-                vertical="true"
-                textSize="18"
-                color="rgb(197, 240, 220)"
-              ></u-loading-icon>
+              <u-loading-icon text="加载中" vertical="true" textSize="18" color="rgb(197, 240, 220)"></u-loading-icon>
             </view>
           </view>
         </view>
@@ -46,124 +32,11 @@
           <u-empty mode="order"></u-empty>
         </view>
         <view>
-          <!-- 采样检测 -->
-          <view
-            v-if="
-              isRoles.isSamplingStaff &
-              (isRoles.isHairStaff ||
-                isRoles.isMedicalStaff ||
-                isRoles.isQuickInspectionStaff ||
-                isRoles.isSewageStaff)
-            "
-          >
-            <view class="orderForm_box" v-for="i in item" :key="i.id" @click="changeToOrderInfo(i)">
-              <view class="box_top">
-                <view class="top_left"
-                  ><text>订单号：{{ i.orderNo }}</text></view
-                >
-              </view>
-              <view class="box_center">
-                <image class="center_img" :src="i.list?.skuList[0]?.imgList[0]?.objName"></image>
-              </view>
-              <view class="center_bottom">
-                <view class="orderTime">
-                  <text>下单时间：</text>
-                  <view class="orderTime_item">{{ i.orderTime }}</view>
-                </view>
-                <view class="orderPlacer">
-                  <text>下单人信息：</text>
-                  <view class="orderPlacer_item">{{ i.phone }} </view>
-                </view>
-                <view class="line"></view>
-                <view class="delivery" v-if="i.state == 20">
-                  <view class="deliveryType">去采样</view>
-                </view>
-                <view class="delivery" v-else-if="i.state == 30">
-                  <view class="deliveryType">未发货</view>
-                </view>
-                <view class="delivery" v-else-if="i.state == 50">
-                  <view class="deliveryType">确认收样</view>
-                </view>
-                <view class="delivery" v-else>
-                  <view class="deliveryType">已完成</view>
-                </view>
-              </view>
-            </view>
-          </view>
-          <!-- 检测人员任务列表 -->
-          <view
-            v-else-if="
-              isRoles.isHairStaff ||
-              isRoles.isMedicalStaff ||
-              isRoles.isQuickInspectionStaff ||
-              isRoles.isSewageStaff
-            "
-          >
-            <view
-              v-for="i in item"
-              :key="i.id"
-              @click="changeToOrderInfo(i)"
-              class="orderForm_box2"
-            >
-              <view class="bellIcon">
-                <u-icon
-                  width="40rpx"
-                  height="40rpx"
-                  name="../../../../static/orderLIst/bell.png"
-                ></u-icon>
-              </view>
-              <view class="text" v-if="i.state == 50">
-                <view class="title">您有新的订单待处理</view>
-                <view class="content">您有任务待处理,请您及时处理</view>
-              </view>
-              <view class="text" v-if="i.state == 60">
-                <view class="title">订单已完成</view>
-                <view class="content">查看结果</view>
-              </view>
-            </view>
-          </view>
-
-          <!-- 采样人员订单管理 -->
-          <view v-else-if="isRoles.isSamplingStaff">
-            <view class="orderForm_box" v-for="i in item" :key="i.id" @click="changeToOrderInfo(i)">
-              <view class="box_top">
-                <view class="top_left"
-                  ><text>订单号：{{ i.orderNo }}</text></view
-                >
-              </view>
-              <view class="box_center">
-                <image class="center_img" :src="i.list?.skuList[0]?.imgList[0]?.objName"></image>
-              </view>
-              <view class="center_bottom">
-                <view class="orderTime">
-                  <text>下单时间：</text>
-                  <view class="orderTime_item">{{ i.orderTime }}</view>
-                </view>
-                <view class="orderPlacer">
-                  <text>下单人信息：</text>
-                  <view class="orderPlacer_item">{{ i.phone }} </view>
-                </view>
-                <view class="line"></view>
-                <view class="delivery" v-if="i.state == 20">
-                  <view class="deliveryType">去采样</view>
-                </view>
-                <view class="delivery" v-else-if="i.state == 30">
-                  <view class="deliveryType">未发货</view>
-                </view>
-                <view class="delivery" v-else>
-                  <view class="deliveryType">已完成</view>
-                </view>
-              </view>
-            </view>
-          </view>
-
           <!-- 普通用户订单管理 -->
-          <view v-else>
+          <view>
             <view class="orderForm_box" v-for="i in item" :key="i.id" @click="changeToOrderInfo(i)">
               <view class="box_top">
-                <view class="top_left"
-                  ><text>订单号：{{ i.orderNo }}</text></view
-                >
+                <view class="top_left"><text>订单号：{{ i.orderNo }}</text></view>
                 <view class="top_right">
                   <view class="top_state">{{ i.status }}</view>
                 </view>
@@ -180,11 +53,8 @@
                   <text>下单人信息：</text>
                   <view class="orderPlacer_item">{{ i.phone }} </view>
                 </view>
-                <button
-                  class="orderButton"
-                  v-if="i.status == '已付款' && i.allowSelfSample == 0"
-                  @click.prevent="reservation(i)"
-                >
+                <button class="orderButton" v-if="i.status == '已付款' && i.allowSelfSample == 0"
+                  @click.prevent="reservation(i)">
                   预约采样
                 </button>
                 <view class="line"></view>
@@ -200,12 +70,10 @@
 <script setup lang="ts">
 import PageNavbar from './PageNavbar.vue'
 import { getuserOrderListAPI } from '@/services/order'
-import type { orderListParams, items, userOrderListParams } from '@/types/order'
-import { onLoad, onPullDownRefresh, onShow, onTabItemTap } from '@dcloudio/uni-app'
+import { onPullDownRefresh, onShow } from '@dcloudio/uni-app'
 import { ref, onBeforeMount } from 'vue'
 import { useMemberStore, useOrderType, useOtherTypes } from '@/stores'
 import Decimal from 'decimal.js'
-import { log } from 'console'
 
 let loading = ref(true)
 //用户类型
@@ -496,7 +364,7 @@ onPullDownRefresh(async () => {
   await getuserOrderList()
   uni.stopPullDownRefresh()
 })
-onBeforeMount(() => {})
+onBeforeMount(() => { })
 onShow(() => {
   isRoles.value = uni.getStorageSync('roles')
   if (!isRoles.value) {
@@ -589,9 +457,6 @@ const reservation = (item: any) => {
 }
 </script>
 <style lang="scss" scoped>
-page {
-}
-
 .bg-top {
   position: absolute;
   z-index: -1;
@@ -698,8 +563,7 @@ page {
         left: 150rpx;
       }
 
-      .line {
-      }
+      .line {}
 
       .delivery {
         margin: 30rpx 0;

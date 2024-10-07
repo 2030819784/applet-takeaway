@@ -6,17 +6,18 @@
     </view>
     <!-- 搜索条 -->
     <view class="search">
-      <view class="search_input" @click="changeToSelect">
-        <!-- <view class="address">
-          <u-icon width="28rpx" height="28rpx" name="../../../../static/home/address.png"></u-icon>
-          <text class="address_text">{{ address }}</text>
-          <u-icon width="16rpx" height="16rpx" name="../../../../static/home/dropDown.png"></u-icon>
-        </view> -->
+      <view class="search_input">
         <view class="line"></view>
         <input type="text" v-model="search" class="input" />
       </view>
       <view class="search_scan">
-        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/scan.png" @click="scanCode"></u-icon>
+        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/search.png" @click="scanCode"></u-icon>
+      </view>
+      <view class="search_scan">
+        <u-icon v-if="memberStore.profile.role === 'customer'" width="52rpx" height="52rpx"
+          name="../../../../static/home/scan.png" @click="scanCode"></u-icon>
+        <u-icon v-if="memberStore.profile.role === 'business'" width="52rpx" height="52rpx"
+          name="../../../../static/home/add.png" @click="addGoods"></u-icon>
       </view>
     </view>
   </view>
@@ -25,6 +26,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
+import { useMemberStore } from '@/stores';
+const memberStore = useMemberStore()
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const address = ref('')
@@ -40,11 +43,16 @@ const scanCode = () => {
     url: '/pages/scanCode/scanCode',
   })
 }
-const changeToSelect = () => {
-  // uni.navigateTo({
-  //   url: '/pages/sample/sample',
-  // })
+const select = () => {
+
 }
+
+const addGoods = () => {
+  uni.navigateTo({
+    url: '/pages/addGoods/index',
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -116,8 +124,13 @@ const changeToSelect = () => {
 
       .input {
         margin-left: 20rpx;
-        width: 70%;
+        width: 60%;
       }
+    }
+
+    .search_scan {
+      padding-left: 20rpx;
+      width: 80rpx;
     }
   }
 

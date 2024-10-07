@@ -1,30 +1,16 @@
 <script setup lang="ts">
-import { postLoginWxMinAPI, postLoginSimpleAPI } from '@/services/login'
-import { useCertification, useMemberStore, useRolesStore } from '@/stores'
+import { postLoginWxMinAPI } from '@/services/login'
+import { useMemberStore, useRolesStore } from '@/stores'
 import userUrl from '@/static/images/logo.png'
 import { reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { log } from 'console'
 
 let phoneCode: string = ''
 const memberStore = useMemberStore()
 let isRoles = reactive({
-  //拥有所有权限
-  isPlatformManager: false,
-  //普通用户
-  isUser: false,
-  //政府工作人员
-  isGovernmentStaff: false,
-  //采样工作人员
-  isSamplingStaff: false,
-  //快检检测员
-  isQuickInspectionStaff: false,
-  //污水检测员
-  isSewageStaff: false,
-  //医检检测员
-  isMedicalStaff: false,
-  //毛发检测员
-  isHairStaff: false,
+  cutstomer: false,
+  rider: false,
+  business: false,
 })
 // 获取用户手机号码
 const getphonenumber: UniHelper.ButtonOnGetphonenumber = async (e) => {
@@ -55,38 +41,18 @@ const login = (code: string) => {
     resolve(result)
   })
 }
-const checkRoles = () => {
-  const roles = memberStore.profile.roles
-  for (let key in roles) {
-    if (roles[key].name == 'platform-manager') {
-      isRoles.isPlatformManager = true
-    } else if (roles[key].name == 'user') {
-      isRoles.isUser = true
-    } else if (roles[key].name == 'government-staff') {
-      isRoles.isGovernmentStaff = true
-    } else if (roles[key].name == 'sampling-staff') {
-      isRoles.isSamplingStaff = true
-    } else if (roles[key].name == 'quickInspection-staff') {
-      isRoles.isQuickInspectionStaff = true
-    } else if (roles[key].name == 'sewage-staff') {
-      isRoles.isSewageStaff = true
-    } else if (roles[key].name == 'medical-staff') {
-      isRoles.isMedicalStaff = true
-    } else if (roles[key].name == 'hair-staff') {
-      isRoles.isHairStaff = true
-    }
-  }
-  const rolesStore = useRolesStore()
-  rolesStore.setRoles(isRoles)
-}
+
 
 const loginSuccess = (profile: any) => {
-  uni.removeStorageSync('Certification')
   if (profile.code === 200) {
     // 保存用户信息
     const memberStore = useMemberStore()
-    memberStore.setProfile(profile.data)
-    checkRoles()
+    memberStore.setProfile({
+      role: 'business',
+      phone: '17312341234',
+      nickName: 'sanqi',
+    })
+
     // 成功提示
     uni.showToast({ icon: 'success', title: '登录成功' })
     setTimeout(() => {
