@@ -14,10 +14,9 @@
         <u-icon width="52rpx" height="52rpx" name="../../../../static/home/search.png" @click="scanCode"></u-icon>
       </view>
       <view class="search_scan">
-        <u-icon v-if="memberStore.profile.role === 'customer'" width="52rpx" height="52rpx"
-          name="../../../../static/home/scan.png" @click="scanCode"></u-icon>
-        <u-icon v-if="memberStore.profile.role === 'business'" width="52rpx" height="52rpx"
-          name="../../../../static/home/add.png" @click="addGoods"></u-icon>
+        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/scan.png" @click="scanCode"></u-icon>
+        <!-- <u-icon  width="52rpx" height="52rpx"
+          name="../../../../static/home/add.png" @click="addGoods"></u-icon> -->
       </view>
     </view>
   </view>
@@ -26,8 +25,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { useMemberStore } from '@/stores';
-const memberStore = useMemberStore()
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const address = ref('')

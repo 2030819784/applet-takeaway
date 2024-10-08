@@ -8,7 +8,8 @@
           </view>
           <view>
             <view class="userTypes">
-              <view class="userType">{{ map.get(memberStore.profile.role)?.text }} </view>
+              <view v-for="(item, index) in memberStore.profile.roles" :key="index" class="userType">{{ item.description
+                }}</view>
             </view>
           </view>
         </view>
@@ -24,18 +25,17 @@
       </view>
       <!-- 订单 -->
       <view class="section">
-        <view v-for="item in map.get(memberStore.profile.role)?.orderTypes" :key="item.state" class="navigator"
-          hover-class="none" @click="changeToOrderStatus(item)">
+        <view v-for="item in list1" :key="item.state" class="navigator" hover-class="none"
+          @click="changeToOrderStatus(item)">
           <u-icon :name="item.icon" size="56rpx" class="section_icon"></u-icon>
           <text class="section_text">{{ item.text }}</text>
         </view>
       </view>
     </view>
     <!-- 其他应用 -->
-    <view class="others">
+    <view class="others" v-if="list2.length != 0">
       <view>管理</view>
-      <view v-for="item in map.get(memberStore.profile.role)?.others" :key="item.state" class="navigator"
-        hover-class="none">
+      <view v-for="item in list2" :key="item.state" class="navigator" hover-class="none">
         <view class="other" @click="changeToOtherPage(item)">
           <u-icon :name="item.icon" size="56rpx" class="others_icon"></u-icon>
           <text class="others_text">{{ item.text }}</text>
@@ -46,26 +46,24 @@
 </template>
 
 <script setup lang="ts">
-import { useMemberStore, useOrderType, useOtherTypes } from '@/stores'
-import { onLoad, onShow } from '@dcloudio/uni-app'
+import { useMemberStore, useOrderType } from '@/stores'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
 
 const map = new Map([
   [
-    'cutstomer',
+    'user',
     {
       text: '用户',
       orderTypes: [
-        { state: 0, text: '待支付', icon: '/static/user/toBePaid.png' },
+        { state: 0, text: '未付款', icon: '/static/user/toBePaid.png' },
         { state: 1, text: '配送中', icon: '/static/user/payment.png' },
         { state: 2, text: '已完成', icon: '/static/user/complete.png' },
+        { state: 3, text: '已取消', icon: '/static/user/complete.png' },
       ],
       others: [
-        { state: 0, text: '运输中', icon: '/static/user/pendingProcessing.png' },
-        { state: 1, text: '已完成', icon: '/static/user/complete2.png' },
-        { state: 2, text: '全部订单', icon: '/static/user/all.png' },
-        { state: 3, text: '商品管理', icon: '/static/user/manage.png' },
-        { state: 4, text: '成为骑手', icon: '/static/user/manage.png' },
-        { state: 5, text: '入驻平台', icon: '/static/user/manage.png' },
+        { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
+        { state: 1, text: '入驻平台', icon: '/static/user/manage.png' },
       ],
     }],
   [
@@ -73,36 +71,33 @@ const map = new Map([
     {
       text: '骑手',
       orderTypes: [
-        { state: 0, text: '待接单', icon: '/static/rider/toBeReceived.png' },
-        { state: 1, text: '配送中', icon: '/static/rider/payment.png' },
-        { state: 2, text: '已完成', icon: '/static/rider/complete.png' },
-      ],
-      others: [
-        { state: 1, text: '配送中', icon: '/static/user/pendingProcessing.png' },
-        { state: 3, text: '已完成', icon: '/static/user/complete2.png' },
-        { state: 4, text: '全部订单', icon: '/static/user/all.png' },
+        { state: 4, text: '配送中', icon: '/static/rider/payment.png' },
+        { state: 5, text: '已送达', icon: '/static/rider/complete.png' },
+        { state: 6, text: '已取消', icon: '/static/user/complete.png' },
       ],
     }],
   [
     'business', {
       text: '商家',
       orderTypes: [
-        { state: 0, text: '制作中', icon: '/static/rider/toBeReceived.png' },
-        { state: 1, text: '配送中', icon: '/static/rider/payment.png' },
-        { state: 2, text: '已完成', icon: '/static/rider/complete.png' },
+        { state: 7, text: '制作中', icon: '/static/rider/toBeReceived.png' },
+        { state: 8, text: '配送中', icon: '/static/rider/payment.png' },
+        { state: 9, text: '已送达', icon: '/static/rider/complete.png' },
+        { state: 10, text: '已完成', icon: '/static/rider/complete.png' },
+        { state: 11, text: '已取消', icon: '/static/user/complete.png' },
       ],
-      others: [
-        { state: 1, text: '配送中', icon: '/static/user/pendingProcessing.png' },
-        { state: 3, text: '已完成', icon: '/static/user/complete2.png' },
-        { state: 4, text: '全部订单', icon: '/static/user/all.png' },
-        { state: 5, text: '商品管理', icon: '/static/user/manage.png' },
-      ],
-    }]
+      others: [{ state: 2, text: '商品管理', icon: '/static/user/manage.png' }],
+    },
+  ],
 ])
 // 获取个人信息
 const memberStore = useMemberStore()
+
+const list1: any = ref([])
+const list2: any = ref([])
+
 onLoad(() => {
-  if (!memberStore.profile.role) {
+  if (!memberStore.profile.roles) {
     uni.navigateTo({
       url: '/pages/login/login',
     })
@@ -123,31 +118,39 @@ const changeToOrderStatus = (item: any) => {
 }
 
 const changeToOtherPage = (item: any) => {
-  if (item.state == 5) {
-    uni.showToast({
-      icon: 'error',
-      title: '策划中!',
-    })
-  } else if (item.state == 6) {
-    uni.navigateTo({
-      url: '/pages/receipt/receipt',
-    })
-  } else if (item.state == 7) {
-    console.log('sss')
-  } else {
-    useOtherTypes().setOtherType(item)
-    uni.switchTab({
-      url: `/pages/list/list`,
-    })
-  }
 }
-</script>
-<style lang="scss" scoped>
-page {
-  height: 100vh;
-  background-color: #f7f7f8;
+const hasExit = (list1, target) => {
+  for (let i = 0; i < list1.length; i++) {
+    if (list1[i].text === target.text)
+      return false
+  }
+  return true
 }
 
+onLoad(() => {
+  if (memberStore.profile.roles.length === 1) {
+    list1.value = map.get(memberStore.profile.roles[0].name)?.orderTypes
+    list2.value = map.get(memberStore.profile.roles[0].name)?.others
+  }
+  else {
+    const temp1: any = []
+    const temp2: any = []
+    memberStore.profile.roles.forEach((item: any) => {
+      map.get(item)?.orderTypes.forEach((value) => {
+        if (hasExit(temp1, value)) {
+          temp1.push(value)
+        }
+      })
+      map.get(item)?.others?.forEach((value) => {
+        temp2.push(value)
+      })
+    })
+    list1.value = temp1
+    list2.value = temp2
+  }
+})
+</script>
+<style lang="scss" scoped>
 .viewport {
   height: 100%;
   background: linear-gradient(158deg, #cfe3fe 0%, #d4f0fc 55%, #f2f6f9 100%);
@@ -251,9 +254,12 @@ page {
     display: flex;
     justify-content: space-between;
     padding: 40rpx 20rpx 10rpx;
+    flex-wrap: wrap;
+    flex-direction: row;
 
     .navigator {
-      margin-left: 20rpx;
+      width: 200rpx;
+      margin-top: 10rpx;
       display: flex;
       justify-content: center;
       align-items: center;

@@ -4,14 +4,10 @@ import { useMemberStore, useRolesStore } from '@/stores'
 import userUrl from '@/static/images/logo.png'
 import { reactive, ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
+import { object } from '@/uni_modules/uv-ui-tools/libs/function/test'
 
 let phoneCode: string = ''
 const memberStore = useMemberStore()
-let isRoles = reactive({
-  cutstomer: false,
-  rider: false,
-  business: false,
-})
 // 获取用户手机号码
 const getphonenumber: UniHelper.ButtonOnGetphonenumber = async (e) => {
   if (e.detail.errMsg!.includes('ok')) {
@@ -46,12 +42,16 @@ const login = (code: string) => {
 const loginSuccess = (profile: any) => {
   if (profile.code === 200) {
     // 保存用户信息
+
     const memberStore = useMemberStore()
-    memberStore.setProfile({
-      role: 'business',
-      phone: '17312341234',
-      nickName: 'sanqi',
+    wx.getUserInfo({
+      desc: '用于展示用户信息',
+      success: (result) => {
+        memberStore.setProfile(Object.assign(profile.data, result.userInfo))
+        console.log(memberStore.profile)
+      }
     })
+
 
     // 成功提示
     uni.showToast({ icon: 'success', title: '登录成功' })

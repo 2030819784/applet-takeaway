@@ -24,7 +24,10 @@
     <view @click="changeToGoodsDetail(item)" class="commodityDes" v-for="item in resultItems" :key="item.id">
       <image style="border-radius: 20rpx;" src="../../../static/images/xicha.png"></image>
       <view style="width: 1400rpx">
-        <text style="font-size: 40rpx;margin: 40rpx;padding: 40rpx,0;">{{ item.name }}</text>
+        <text style="font-size: 40rpx;margin: 40rpx;padding: 40rpx,0;white-space: nowrap;">{{ item.name }}</text>
+        <text v-if="item.closeTime"
+          style="font-size: 30rpx;margin: 40rpx;padding: 40rpx,0;white-space: nowrap;position: absolute;right: 0;top:-30rpx">
+          {{ item.closeTime }}打烊</text>
         <view style="margin-left: 40rpx;margin-top: 20rpx;">
           <text>
             <text style="color: orange;font-size: 20px;">4.8分</text>

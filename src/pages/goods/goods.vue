@@ -28,8 +28,7 @@
 		<scroll-view :scroll-y="true">
 			<view style="height: 1000rpx">
 				<view class="top">
-					<img src="https://cdn.uviewui.com/uview/swiper/swiper3.png"
-						style="height: 200rpx; width: 200rpx; margin: 20rpx" />
+					<img src="../../static/images/xicha2.png" style="height: 200rpx; width: 200rpx; margin: 20rpx" />
 					<text>￥<text style="font-size: 60rpx">{{ goods.price }}</text>
 					</text>
 				</view>
