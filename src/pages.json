@@ -1,0 +1,189 @@
+{
+	// 组件自动引入规则
+	"easycom": {
+		// 是否开启自动扫描
+		"autoscan": true,
+		// 以正则方式自定义组件匹配规则
+		"custom": {
+			// uni-ui 规则如下配置
+			"^uni-(.*)": "@dcloudio/uni-ui/lib/uni-$1/uni-$1.vue",
+			"^u--(.*)": "uview-plus/components/u-$1/u-$1.vue",
+			"^up-(.*)": "uview-plus/components/u-$1/u-$1.vue",
+			"^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
+		}
+	},
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		// {
+		// 	"path": "pages/cart/cart",
+		// 	"style": {
+		// 		"navigationStyle": "custom",
+		// 		"navigationBarTitleText": "购物车",
+		// 		"enablePullDownRefresh": true
+		// 	}
+		// },
+		{
+			"path": "pages/scanCode/scanCode",
+			"style": {
+				"navigationBarTitleText": "扫码",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/addGoods/index",
+			"style": {
+				"navigationBarTitleText": "添加商品",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
+				"navigationBarTitleText": "我的"
+			}
+		},
+		{
+			"path": "pages/goods/goods",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
+		{
+			"path": "pages/list/list",
+			"style": {
+				"navigationBarTitleText": "订单管理",
+				"navigationStyle": "custom",
+				"navigationBarBackgroundColor": "#01b575",
+				"enablePullDownRefresh": true,
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/sample/sample",
+			"style": {
+				"navigationBarTitleText": "采样点选择",
+				// "navigationStyle": "custom",
+				"navigationBarBackgroundColor": "#01b575",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/QRcode/QRcode",
+			"style": {
+				"navigationBarTitleText": "二维码",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#F5F5F5"
+			}
+		},
+		{
+			"path": "pages/payment/payment",
+			"style": {
+				"navigationBarTitleText": "确认订单",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#00b26a"
+			}
+		},
+		{
+			"path": "pages/governmentAgencies/index",
+			"style": {
+				"navigationBarTitleText": "政府机关页面",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#00b26a",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/map/map",
+			"style": {
+				"navigationBarTitleText": "地图",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#01b575"
+			}
+		},
+		{
+			"path": "pages/waitOrder/waitOrder",
+			"style": {
+				"navigationBarTitleText": "待付款",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#3BCE7D"
+			}
+		},
+		{
+			"path": "pages/roles/roles",
+			"style": {
+				"navigationBarTitleText": "我的角色",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/shops/shops",
+			"style": {
+				"navigationBarTitleText": "商铺详情",
+				"enablePullDownRefresh": false
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"enablePullDownRefresh": true
+	},
+	// 设置 TabBar
+	"tabBar": {
+		"color": "#333",
+		"selectedColor": "#27ba9b",
+		"backgroundColor": "#fff",
+		"borderStyle": "white",
+		"list": [
+			{
+				"text": "首页",
+				"pagePath": "pages/index/index",
+				"iconPath": "static/tabs/home_default.png",
+				"selectedIconPath": "static/tabs/home_selected.png"
+			},
+			// {
+			// 	"text": "购物车",
+			// 	"pagePath": "pages/cart/cart",
+			// 	"iconPath": "static/tabs/cart_default.png",
+			// 	"selectedIconPath": "static/tabs/cart_selected.png"
+			// },
+			{
+				"text": "订单",
+				"pagePath": "pages/list/list",
+				"iconPath": "static/tabs/orderForm_default.png",
+				"selectedIconPath": "static/tabs/orderForm_selected.png"
+			},
+			// {
+			// 	"text": "扫码",
+			// 	"pagePath": "pages/scanCode/scanCode",
+			// 	"iconPath": "static/images/scanCode2.png",
+			// 	"selectedIconPath": "static/images/scanCode1.png"
+			// },
+			{
+				"text": "我的",
+				"pagePath": "pages/user/user",
+				"iconPath": "static/tabs/user_default .png",
+				"selectedIconPath": "static/tabs/user_selected.png"
+			}
+		]
+	}
+}
