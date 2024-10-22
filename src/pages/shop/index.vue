@@ -7,7 +7,8 @@
               background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);
             " @click="addShop()">添加商铺</button>
         </view>
-        <view class="goods_select" v-for="item in shops" :key="item.id" @click="changeToShopDetail(item)">
+        <view v-if="shops.length !== 0" class="goods_select" v-for="item in shops" :key="item.id"
+            @click="changeToShopDetail(item)">
             <image style="border-radius: 20rpx" src="../../static/images/zisu.png"></image>
             <view style="width: 1400rpx; margin-left: 20rpx">
                 <text style="font-size: 40rpx; margin-top: 40rpx">{{ item.name }}</text>
@@ -15,6 +16,9 @@
                     <text>￥ {{ item.price }}</text>
                 </view>
             </view>
+        </view>
+        <view v-else>
+            <u-empty text="商铺为空"></u-empty>
         </view>
     </view>
 </template>
@@ -25,16 +29,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { ref, toRaw } from 'vue'
 
 const shop: any = ref({})
-const shops: any = ref([
-    {
-        name: '茶白到',
-        price: '100'
-    },
-    {
-        name: '茶不到',
-        price: '1000'
-    }
-])
+const shops: any = ref([])
 
 // onLoad((option: any) => {
 //     shop.value = JSON.parse(decodeURIComponent(option.data))
@@ -65,7 +60,7 @@ const changeToShopDetail = (item: any) => {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background-color: #f2f5f5;
+    // background-color: #f2f5f5;
     padding: 0 32rpx;
 
     .goods_price {

@@ -1,9 +1,18 @@
 <template>
     <view class="main">
         <view>
-            <up-form labelPosition="left">
-                <up-form-item label="名称:"><up-input v-model="goods.name"></up-input></up-form-item>
-                <up-form-item label="单价:"><up-input v-model="goods.price"></up-input></up-form-item>
+            <up-form labelPosition="left" labelWidth="100px">
+                <up-form-item label="商铺名称:"><up-input v-model="shop.name"></up-input></up-form-item>
+                <up-form-item label="商铺类别:">
+                    <picker @change="getType" mode='selector' :value="index" :range="type.map(item => item.label)">
+                        {{ type[index]?.label }}
+                    </picker>
+                </up-form-item>
+                <up-form-item label="联系电话:"><up-input v-model="shop.phone"></up-input></up-form-item>
+                <up-form-item label="商铺配送费:"><up-input v-model="shop.deliveryCost"></up-input></up-form-item>
+                <up-form-item label="开业时间:"><up-input v-model="shop.openTime"></up-input></up-form-item>
+                <up-form-item label="打烊时间:"><up-input v-model="shop.restTime"></up-input></up-form-item>
+                <up-form-item label="商铺描述:"><up-input v-model="shop.description"></up-input></up-form-item>
                 <up-form-item label="图片:">
                     <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
                         @click="chooseImage"></u-icon>
@@ -21,11 +30,43 @@
     </view>
 </template>
 <script lang="ts" setup>
+import { getGoodsCategoryListAPI } from '@/services/home'
+import { addShopAPI } from '@/services/shop'
+import { onLoad } from '@dcloudio/uni-app'
+import { ref } from 'vue'
 
-const goods: any = {
+
+const shop: any = {
     name: '',
-    price: '',
+    phone: '',
+    deliveryCost: '',
+    openTime: '',
+    restTime: '',
+    description: '',
     photo: [],
+    typeId: '',
+}
+
+const type: any = ref([])
+const index = ref(0)
+
+
+//获取商品分类
+const getCategoryList = async () => {
+    const result: any = await getGoodsCategoryListAPI('shop_type')
+    if (result.code === 200) {
+        type.value = result.data[0].children
+        console.log(type.value)
+    }
+}
+
+onLoad(() => {
+    getCategoryList()
+})
+
+const getType = (item: any) => {
+    index.value = item.detail.value
+    shop.typeId = type.value[index.value].id
 }
 
 const chooseImage = () => {
@@ -33,7 +74,7 @@ const chooseImage = () => {
         {
             count: 1,
             success: (list) => {
-                goods.photo = list
+                shop.photo = list
             },
             fail: () => {
                 uni.showToast({
@@ -49,9 +90,9 @@ const chooseImage = () => {
 const uploadImage = () => {
     uni.uploadFile({
         url: 'http://localhost:8081/goods/save',
-        files: goods.photo,
-        name: goods.name,
-        formData: goods,
+        files: shop.photo,
+        name: shop.name,
+        formData: shop,
         success: (result) => {
             console.log(result)
         },
@@ -64,11 +105,18 @@ const uploadImage = () => {
     })
 }
 
+const save = async () => {
+    if (shop.typeId === '') shop.typeId = type.value[0].id
+    const result = await addShopAPI(shop)
+    console.log(result)
+}
+
 const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
-    uploadImage()
+    // uploadImage()
+    save()
 }
 </script>
 <style lang="scss" scoped>
@@ -88,6 +136,7 @@ const sure = () => {
         margin-top: auto;
         display: flex;
         justify-content: center;
+        flex-direction: row;
         position: fixed;
         bottom: 0;
         width: 710rpx;
