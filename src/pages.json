@@ -52,6 +52,30 @@
 			}
 		},
 		{
+			"path": "pages/addShop/index",
+			"style": {
+				"navigationBarTitleText": "添加商铺",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
+			"path": "pages/shop/index",
+			"style": {
+				"navigationBarTitleText": "个人商铺",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
+			"path": "pages/shopDetail/index",
+			"style": {
+				"navigationBarTitleText": "商铺管理",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationStyle": "custom",

@@ -118,6 +118,11 @@ const changeToOrderStatus = (item: any) => {
 }
 
 const changeToOtherPage = (item: any) => {
+  if (item.text === '入驻平台') {
+    uni.navigateTo({
+      url: '/pages/shop/index'
+    })
+  }
 }
 const hasExit = (list1, target) => {
   for (let i = 0; i < list1.length; i++) {

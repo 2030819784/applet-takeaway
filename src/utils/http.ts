@@ -59,7 +59,7 @@ export const http = async (options: any) => {
 					uni.setStorageSync('token', res.header.authorization)
 					loginStore.token = res.header.authorization
 				}
-				if (res.data.code?.toString().slice(0, 4) == '1101') {
+				if (res.data.code?.toString().slice(0, 4) == '1101' || !uni.getStorageSync('user')) {
 					uni.showToast({ icon: 'error', title: '请前往登录' })
 					uni.navigateTo({
 						url: '/pages/login/login',
