@@ -13,10 +13,8 @@ export default pinia
 // 模块统一导出
 export * from './modules/member'
 export * from './modules/login'
-export * from './modules/map'
 export * from './modules/roles'
 export * from './modules/orderType'
 export * from './modules/otherType'
-export * from './modules/certification'
 export * from './modules/sample'
-export * from './modules/comfirm'
+
