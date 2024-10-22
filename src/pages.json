@@ -76,6 +76,14 @@
 			}
 		},
 		{
+			"path": "pages/rider/index",
+			"style": {
+				"navigationBarTitleText": "成为骑手",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationStyle": "custom",

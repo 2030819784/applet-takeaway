@@ -118,10 +118,17 @@ const changeToOrderStatus = (item: any) => {
 }
 
 const changeToOtherPage = (item: any) => {
+  if (item.text === '成为骑手') {
+    uni.navigateTo({
+      url: '/pages/rider/index'
+    })
+    return
+  }
   if (item.text === '入驻平台') {
     uni.navigateTo({
       url: '/pages/shop/index'
     })
+    return
   }
 }
 const hasExit = (list1, target) => {
