@@ -1,5 +1,5 @@
 <template>
-  <view class="address">
+  <view class="address" @click="selectAddres">
     <image src="../../static/images/addresss.png"></image>
     <view v-if="item">
       <text class="addressMessage">{{ item.address }}</text>
@@ -7,14 +7,7 @@
         item.phone }}</text></text>
     </view>
     <view v-else>
-      <text class="addressMessage">{{ address }}</text>
-      <!-- {{ memberStore.profile.nickname }} -->
-      <!-- {{
-          memberStore.profile.phone
-        }} -->
-      <text class="identity"><text>杨洋</text>
-        <text style="font-weight: 300; margin-left: 20rpx">17328029396</text>
-      </text>
+      <u-empty text="请选择收货地址"></u-empty>
     </view>
   </view>
 </template>
@@ -22,26 +15,18 @@
 <script lang="ts" setup>
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import { useMemberStore } from '@/stores'
-
-const memberStore = useMemberStore()
-//寄件方地址
-const address = ref('')
-onShow(() => {
-  if (uni.getStorageSync('userAddress')) {
-    item.value = uni.getStorageSync('userAddress')
-    uni.removeStorageSync('userAddress')
-  } else {
-    address.value = uni.getStorageSync('address').address
-  }
-})
 
 let item = ref()
-
-
-defineExpose({
-  address,
+onShow(() => {
+  item.value = uni.getStorageSync('userAddress') || {}
 })
+
+const selectAddres = () => {
+  uni.navigateTo({
+    url: '/pages/address/index'
+  })
+}
+
 </script>
 
 <style lang="scss">
