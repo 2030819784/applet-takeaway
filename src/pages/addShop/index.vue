@@ -54,6 +54,8 @@ const shop: any = reactive({
     typeId: '',
 })
 
+var tempFilePaths = [];
+
 const type: any = ref([])
 const index = ref(0)
 
@@ -87,8 +89,10 @@ const chooseImage = () => {
     uni.chooseImage(
         {
             count: 1,
-            success: (list) => {
-                shop.shopPhoto = uni.getFileSystemManager().readFileSync(list.tempFilePaths[0], 'base64')
+            sizeType: ['original', 'compressed'],
+            sourceType: ['album','camera'],
+            success: (res) => {
+              tempFilePaths = res.tempFilePaths
             },
             fail: () => {
                 uni.showToast({
@@ -101,26 +105,27 @@ const chooseImage = () => {
     )
 }
 
-// const uploadImage = () => {
-//     if (shop.typeId === '') shop.typeId = type.value[0].id
-//     uni.uploadFile({
-//         url: 'http://localhost:8081/shop/register',
-//         files: shop.photo,
-//         filePath: shop.photo.toString(),
-//         name: shop.name,
-//         formData: shop,
-//         success: (result) => {
-//             console.log(result)
-//         },
-//         fail: (fail) => {
-//             console.log(fail, shop)
-//             uni.showToast({
-//                 icon: 'error',
-//                 title: '图片上传失败',
-//             })
-//         },
-//     })
-// }
+
+const uploadImage = () => {
+    if (shop.typeId === '') shop.typeId = type.value[0].id
+    uni.uploadFile({
+        url: 'http://localhost:8081/shop/register',
+        filePath: tempFilePaths[0],
+        name: 'shopPhoto',
+        formData: shop,
+        header:{"Content-Type": "multipart/form-data"},
+        success: (result) => {
+          console.log(result)
+        },
+        fail: (fail) => {
+            console.log(fail, shop)
+            uni.showToast({
+                icon: 'error',
+                title: '图片上传失败',
+            })
+        },
+    })
+}
 
 const submit = async () => {
     if (shop.typeId === '') shop.typeId = type.value[0].id
@@ -132,9 +137,8 @@ const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
-    // uploadImage()
-    submit()
-
+    uploadImage()
+    // submit()
 }
 </script>
 <style lang="scss" scoped>
