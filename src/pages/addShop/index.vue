@@ -10,8 +10,16 @@
                 </up-form-item>
                 <up-form-item label="联系电话:"><up-input v-model="shop.phone"></up-input></up-form-item>
                 <up-form-item label="商铺配送费:"><up-input v-model="shop.deliveryCost"></up-input></up-form-item>
-                <up-form-item label="开业时间:"><up-input v-model="shop.openTime"></up-input></up-form-item>
-                <up-form-item label="打烊时间:"><up-input v-model="shop.restTime"></up-input></up-form-item>
+                <up-form-item label="开业时间:">
+                    <picker mode="time" :value="shop.openTime" @change="changeOpenTime">
+                        <view class="uni-input">{{ shop.openTime }}</view>
+                    </picker>
+                </up-form-item>
+                <up-form-item label="打烊时间:">
+                    <picker mode="time" :value="shop.restTime" @change="changeRestTime">
+                        <view class="uni-input">{{ shop.restTime }}</view>
+                    </picker>
+                </up-form-item>
                 <up-form-item label="商铺描述:"><up-input v-model="shop.description"></up-input></up-form-item>
                 <up-form-item label="图片:">
                     <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
@@ -33,19 +41,18 @@
 import { getGoodsCategoryListAPI } from '@/services/home'
 import { addShopAPI } from '@/services/shop'
 import { onLoad } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 
-const shop: any = {
+const shop: any = reactive({
     name: '',
     phone: '',
     deliveryCost: '',
-    openTime: '',
-    restTime: '',
+    openTime: '09:01',
+    restTime: '21:01',
     description: '',
-    photo: [],
     typeId: '',
-}
+})
 
 const type: any = ref([])
 const index = ref(0)
@@ -58,6 +65,13 @@ const getCategoryList = async () => {
         type.value = result.data[0].children
         console.log(type.value)
     }
+}
+
+const changeOpenTime = (e) => {
+    shop.openTime = e.detail.value
+}
+const changeRestTime = (e) => {
+    shop.restTime = e.detail.value
 }
 
 onLoad(() => {
@@ -74,7 +88,7 @@ const chooseImage = () => {
         {
             count: 1,
             success: (list) => {
-                shop.photo = list
+                shop.shopPhoto = uni.getFileSystemManager().readFileSync(list.tempFilePaths[0], 'base64')
             },
             fail: () => {
                 uni.showToast({
@@ -87,28 +101,31 @@ const chooseImage = () => {
     )
 }
 
-const uploadImage = () => {
-    uni.uploadFile({
-        url: 'http://localhost:8081/goods/save',
-        files: shop.photo,
-        name: shop.name,
-        formData: shop,
-        success: (result) => {
-            console.log(result)
-        },
-        fail: (fail) => {
-            uni.showToast({
-                icon: 'error',
-                title: '图片上传失败',
-            })
-        },
-    })
-}
+// const uploadImage = () => {
+//     if (shop.typeId === '') shop.typeId = type.value[0].id
+//     uni.uploadFile({
+//         url: 'http://localhost:8081/shop/register',
+//         files: shop.photo,
+//         filePath: shop.photo.toString(),
+//         name: shop.name,
+//         formData: shop,
+//         success: (result) => {
+//             console.log(result)
+//         },
+//         fail: (fail) => {
+//             console.log(fail, shop)
+//             uni.showToast({
+//                 icon: 'error',
+//                 title: '图片上传失败',
+//             })
+//         },
+//     })
+// }
 
-const save = async () => {
+const submit = async () => {
     if (shop.typeId === '') shop.typeId = type.value[0].id
     const result = await addShopAPI(shop)
-    console.log(result)
+    console.log(shop)
 }
 
 const cancel = () => {
@@ -116,7 +133,8 @@ const cancel = () => {
 }
 const sure = () => {
     // uploadImage()
-    save()
+    submit()
+
 }
 </script>
 <style lang="scss" scoped>

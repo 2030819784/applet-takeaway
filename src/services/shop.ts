@@ -5,6 +5,9 @@ export const addShopAPI = (data: any) => {
     return http({
         method: 'POST',
         url: '/shop/register',
-        data
+        data,
+        header: {
+            'Content-Type': 'application/jsonoctet-stream'
+        },
     })
 }
