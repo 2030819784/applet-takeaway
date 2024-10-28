@@ -39,6 +39,8 @@
 </template>
 <script lang="ts" setup>
 import { getGoodsCategoryListAPI } from '@/services/home'
+import { getUserInfoAPI } from '@/services/user';
+import { useMemberStore } from '@/stores';
 import { onLoad } from '@dcloudio/uni-app'
 import { reactive, ref } from 'vue'
 
@@ -64,7 +66,6 @@ const getCategoryList = async () => {
     const result: any = await getGoodsCategoryListAPI('shop_type')
     if (result.code === 200) {
         type.value = result.data[0].children
-        console.log(type.value)
     }
 }
 
@@ -113,17 +114,17 @@ const uploadImage = () => {
         name: 'shopPhoto',
         formData: shop,
         header: { "Content-Type": "multipart/form-data" },
-        success: (result) => {
+        success: () => {
             uni.showToast({
                 title: '商铺创建成功',
                 icon: 'success'
             })
+            judgeRole()
             setTimeout(() => {
                 uni.navigateBack()
             }, 500)
         },
         fail: (fail) => {
-            console.log(fail, shop)
             uni.showToast({
                 icon: 'error',
                 title: '图片上传失败',
@@ -138,6 +139,20 @@ const cancel = () => {
 const sure = () => {
     uploadImage()
 }
+
+const judgeRole = async () => {
+    const user = uni.getStorageSync('user')
+    const result = user.roles.some((item) => item.name == 'business')
+    if (!result) {
+        const res = await getUserInfoAPI()
+        if (res.code === 200) {
+            user.roles = res.data.roles
+            const memberStore = useMemberStore()
+            memberStore.setProfile(user)
+        }
+    }
+}
+
 </script>
 <style lang="scss" scoped>
 .main {

@@ -9,3 +9,12 @@ export const getUserInfoByUserIdAPI = (id: number) => {
     url: `/order/detail/${id}`,
   })
 }
+
+/** 获取用户信息 */
+
+export const getUserInfoAPI = () => {
+  return http({
+    method: 'GET',
+    url: `/user/info`,
+  })
+}

@@ -46,9 +46,14 @@
 </template>
 
 <script setup lang="ts">
-import { useMemberStore, useOrderType } from '@/stores'
-import { onLoad } from '@dcloudio/uni-app'
+import { useMemberStore, } from '@/stores'
+import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
+
+const others = [
+  { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
+  { state: 1, text: '入驻平台', icon: '/static/user/manage.png' },
+]
 
 const map = new Map([
   [
@@ -60,10 +65,6 @@ const map = new Map([
         { state: 1, text: '配送中', icon: '/static/user/payment.png', status: 2 },
         { state: 2, text: '已完成', icon: '/static/user/complete.png', status: 4 },
         { state: 3, text: '已取消', icon: '/static/user/complete.png', status: 5 },
-      ],
-      others: [
-        { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
-        { state: 1, text: '入驻平台', icon: '/static/user/manage.png' },
       ],
     }],
   [
@@ -85,8 +86,7 @@ const map = new Map([
         { state: 9, text: '已送达', icon: '/static/rider/complete.png', status: 3 },
         { state: 10, text: '已完成', icon: '/static/rider/complete.png', status: 4 },
         { state: 11, text: '已取消', icon: '/static/user/complete.png', status: 5 },
-      ],
-      others: [{ state: 2, text: '商品管理', icon: '/static/user/manage.png' }],
+      ]
     },
   ],
 ])
@@ -95,14 +95,6 @@ const memberStore = useMemberStore()
 
 const list1: any = ref([])
 const list2: any = ref([])
-
-onLoad(() => {
-  if (!memberStore.profile.roles) {
-    uni.navigateTo({
-      url: '/pages/login/login',
-    })
-  }
-})
 
 //跳转到订单页面全部
 const changeToOrderPage = () => {
@@ -125,7 +117,7 @@ const changeToOtherPage = (item: any) => {
     })
     return
   }
-  if (item.text === '入驻平台') {
+  if (item.text === '入驻平台' || item.text === '商铺管理') {
     uni.navigateTo({
       url: '/pages/shop/index'
     })
@@ -140,26 +132,34 @@ const hasExit = (list1, target) => {
   return true
 }
 
-onLoad(() => {
+onShow(() => {
+  if (!memberStore.profile.roles) {
+    uni.navigateTo({
+      url: '/pages/login/login',
+    })
+  }
+
+  memberStore.profile.roles.forEach(item => {
+    if (item.name === 'shoper') others[1].text = '商铺管理'
+    if (item.name === 'rider') others.splice(0, 1)
+  })
+  list2.value = others
+
   if (memberStore.profile.roles.length === 1) {
     list1.value = map.get(memberStore.profile.roles[0].name)?.orderTypes
-    list2.value = map.get(memberStore.profile.roles[0].name)?.others
   }
   else {
     const temp1: any = []
-    const temp2: any = []
     memberStore.profile.roles.forEach((item: any) => {
-      map.get(item)?.orderTypes.forEach((value) => {
+
+      map.get(item.name)!.orderTypes.forEach((value) => {
         if (hasExit(temp1, value)) {
           temp1.push(value)
         }
       })
-      map.get(item)?.others?.forEach((value) => {
-        temp2.push(value)
-      })
     })
     list1.value = temp1
-    list2.value = temp2
+
   }
 })
 </script>
@@ -212,6 +212,8 @@ onLoad(() => {
   }
 
   .userTypes {
+    display: flex;
+
     .userType {
       display: flex;
       justify-content: space-between;
@@ -220,6 +222,7 @@ onLoad(() => {
       max-width: 266rpx;
       margin-top: 24rpx;
       margin-bottom: 16rpx;
+      margin-right: 20rpx;
       background: #ffffff;
       border-radius: 20rpx 20rpx 20rpx 20rpx;
       opacity: 1;
