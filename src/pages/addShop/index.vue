@@ -39,7 +39,6 @@
 </template>
 <script lang="ts" setup>
 import { getGoodsCategoryListAPI } from '@/services/home'
-import { addShopAPI } from '@/services/shop'
 import { onLoad } from '@dcloudio/uni-app'
 import { reactive, ref } from 'vue'
 
@@ -54,7 +53,7 @@ const shop: any = reactive({
     typeId: '',
 })
 
-var tempFilePaths = [];
+let tempFilePaths: string[] | string = [];
 
 const type: any = ref([])
 const index = ref(0)
@@ -90,9 +89,9 @@ const chooseImage = () => {
         {
             count: 1,
             sizeType: ['original', 'compressed'],
-            sourceType: ['album','camera'],
+            sourceType: ['album', 'camera'],
             success: (res) => {
-              tempFilePaths = res.tempFilePaths
+                tempFilePaths = res.tempFilePaths
             },
             fail: () => {
                 uni.showToast({
@@ -113,9 +112,9 @@ const uploadImage = () => {
         filePath: tempFilePaths[0],
         name: 'shopPhoto',
         formData: shop,
-        header:{"Content-Type": "multipart/form-data"},
+        header: { "Content-Type": "multipart/form-data" },
         success: (result) => {
-          console.log(result)
+            console.log(result)
         },
         fail: (fail) => {
             console.log(fail, shop)
@@ -127,18 +126,11 @@ const uploadImage = () => {
     })
 }
 
-const submit = async () => {
-    if (shop.typeId === '') shop.typeId = type.value[0].id
-    const result = await addShopAPI(shop)
-    console.log(shop)
-}
-
 const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
     uploadImage()
-    // submit()
 }
 </script>
 <style lang="scss" scoped>

@@ -16,7 +16,7 @@
             paddingRight: '15px',
             height: '64px',
             fontSize: '44rpx',
-          }" :inactiveStyle="{ color: '#ffffff', fontWeight: '400', fontSize: '28rpx' }"
+          }" :inactiveStyle="{ color: '#ffffff', fontWeight: '400', fontSize: '28rpx' }" :current="current"
             @change="changeCurrent"></u-tabs>
         </u-sticky>
       </view>
@@ -58,6 +58,8 @@ import { ref } from 'vue'
 //用户类型
 const user = uni.getStorageSync('user')
 const tabsList = ref()
+
+const current = ref(0)
 //普通用户 商家
 const tabsList1 = [
   {
@@ -126,6 +128,15 @@ const changeToOrderInfo = (item: any) => {
     })
   }
 }
+
+const changeSelect = (status: string) => {
+  tabsList.value.forEach((item: any, index: number) => {
+    if (item.status === status) {
+      current.value = index
+      return
+    }
+  });
+}
 onShow(() => {
   if (!user) {
     uni.navigateTo({
@@ -133,7 +144,10 @@ onShow(() => {
     })
   }
   select()
-  getuserOrderList()
+  const status = uni.getStorageSync('orderStatus')
+  status ? changeSelect(status) : current.value = 0
+  status ? getuserOrderList(status) : getuserOrderList()
+  status && uni.removeStorageSync('orderStatus')
 })
 </script>
 <style lang="scss" scoped>

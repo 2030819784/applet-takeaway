@@ -56,10 +56,10 @@ const map = new Map([
     {
       text: '用户',
       orderTypes: [
-        { state: 0, text: '未付款', icon: '/static/user/toBePaid.png' },
-        { state: 1, text: '配送中', icon: '/static/user/payment.png' },
-        { state: 2, text: '已完成', icon: '/static/user/complete.png' },
-        { state: 3, text: '已取消', icon: '/static/user/complete.png' },
+        { state: 0, text: '未付款', icon: '/static/user/toBePaid.png', status: 0 },
+        { state: 1, text: '配送中', icon: '/static/user/payment.png', status: 2 },
+        { state: 2, text: '已完成', icon: '/static/user/complete.png', status: 4 },
+        { state: 3, text: '已取消', icon: '/static/user/complete.png', status: 5 },
       ],
       others: [
         { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
@@ -71,20 +71,20 @@ const map = new Map([
     {
       text: '骑手',
       orderTypes: [
-        { state: 4, text: '配送中', icon: '/static/rider/payment.png' },
-        { state: 5, text: '已送达', icon: '/static/rider/complete.png' },
-        { state: 6, text: '已取消', icon: '/static/user/complete.png' },
+        { state: 4, text: '配送中', icon: '/static/rider/payment.png', status: 2 },
+        { state: 5, text: '已送达', icon: '/static/rider/complete.png', status: 3 },
+        { state: 6, text: '已取消', icon: '/static/user/complete.png', status: 5 },
       ],
     }],
   [
     'shoper', {
       text: '商家',
       orderTypes: [
-        { state: 7, text: '制作中', icon: '/static/rider/toBeReceived.png' },
-        { state: 8, text: '配送中', icon: '/static/rider/payment.png' },
-        { state: 9, text: '已送达', icon: '/static/rider/complete.png' },
-        { state: 10, text: '已完成', icon: '/static/rider/complete.png' },
-        { state: 11, text: '已取消', icon: '/static/user/complete.png' },
+        { state: 7, text: '制作中', icon: '/static/rider/toBeReceived.png', status: 1 },
+        { state: 8, text: '配送中', icon: '/static/rider/payment.png', status: 2 },
+        { state: 9, text: '已送达', icon: '/static/rider/complete.png', status: 3 },
+        { state: 10, text: '已完成', icon: '/static/rider/complete.png', status: 4 },
+        { state: 11, text: '已取消', icon: '/static/user/complete.png', status: 5 },
       ],
       others: [{ state: 2, text: '商品管理', icon: '/static/user/manage.png' }],
     },
@@ -111,7 +111,8 @@ const changeToOrderPage = () => {
   })
 }
 const changeToOrderStatus = (item: any) => {
-  useOrderType().setOrderTypes(item)
+  //tabbar页面不能路由传参
+  uni.setStorageSync('orderStatus', item.status)
   uni.switchTab({
     url: `/pages/list/list`,
   })
