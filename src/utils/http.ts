@@ -30,7 +30,6 @@ const httpInterceptor = {
 			'source-client': 'miniapp',
 			authorization: uni.getStorageSync('token') ? uni.getStorageSync('token') : '',
 		}
-		console.log('1111', options.header)
 	},
 }
 uni.addInterceptor('request', httpInterceptor)

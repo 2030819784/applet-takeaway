@@ -114,7 +114,10 @@ const uploadImage = () => {
         formData: shop,
         header: { "Content-Type": "multipart/form-data" },
         success: (result) => {
-            console.log(result)
+            uni.showToast({
+                title: '商铺创建成功',
+                icon: 'success'
+            })
         },
         fail: (fail) => {
             console.log(fail, shop)

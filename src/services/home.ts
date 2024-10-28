@@ -23,7 +23,7 @@ export const getShopListAPI = (id: number) => {
   })
 }
 //根据商铺id获取商铺信息---
-export const getShopMessageAPI = (id: number) => {
+export const getShopMessageAPI = (id: string) => {
   return http({
     method: 'GET',
     url: `/shop/info?shopId=${id}`,

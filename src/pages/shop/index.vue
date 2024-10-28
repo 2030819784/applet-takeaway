@@ -7,13 +7,12 @@
               background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);
             " @click="addShop()">添加商铺</button>
         </view>
-        <view v-if="shops.length !== 0" class="goods_select" v-for="item in shops" :key="item.id"
-            @click="changeToShopDetail(item)">
-            <image style="border-radius: 20rpx" src="../../static/images/zisu.png"></image>
-            <view style="width: 1400rpx; margin-left: 20rpx">
-                <text style="font-size: 40rpx; margin-top: 40rpx">{{ item.name }}</text>
-                <view style="margin-left: 40rpx">
-                    <text>￥ {{ item.price }}</text>
+        <view v-if="shops.length !== 0">
+            <view class="goods_select" v-for="item in shops" :key="item.id" @click="changeToShopDetail(item)">
+                <image style="border-radius: 20rpx;width: 1000rpx;" :src="item.shopPhoto"></image>
+                <view
+                    style="width: 1400rpx; margin-left: 20rpx;display: flex;justify-content: center;align-items: center;">
+                    <text style="font-size: 40rpx">{{ item.name }}</text>
                 </view>
             </view>
         </view>
@@ -24,23 +23,14 @@
 </template>
 
 <script setup lang="ts">
-import { getGoodsListAPI } from '@/services/home'
-import { onLoad } from '@dcloudio/uni-app'
+import { selfShopListAPI } from '@/services/shop'
+import { onShow } from '@dcloudio/uni-app'
 import { ref, toRaw } from 'vue'
 
-const shop: any = ref({})
 const shops: any = ref([])
 
-// onLoad((option: any) => {
-//     shop.value = JSON.parse(decodeURIComponent(option.data))
-//     getDetail(shop.value.id)
-// })
-const getDetail = async (id: string) => {
-    const result: any = await getGoodsListAPI(id)
-    if (result.code == 200) {
-        shops.value = result.data
-    }
-}
+
+
 const addShop = () => {
     uni.navigateTo({
         url: '/pages/addShop/index',
@@ -48,11 +38,29 @@ const addShop = () => {
 }
 const changeToShopDetail = (item: any) => {
     const data = toRaw(item)
-    data.goodsPhoto = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
     uni.navigateTo({
         url: '/pages/shopDetail/index?data=' + encodeURIComponent(JSON.stringify(data)),
     })
 }
+
+
+const getSelfShopList = async () => {
+    const result = await selfShopListAPI()
+    if (result.code == 200) {
+        shops.value = result.data
+    }
+    else
+        uni.showToast({
+            title: '网络错误',
+            icon: 'error'
+        })
+}
+
+onShow(() => {
+    getSelfShopList()
+})
+
+
 </script>
 
 <style lang="scss" scoped>

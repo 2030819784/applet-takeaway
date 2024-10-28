@@ -19,10 +19,10 @@
         </view>
         <view class="footer">
             <view class="bottom">
-                <up-button text="取消" color="red" shape="circle" @click="cancel"></up-button>
+                <up-button text="放弃修改" color="red" shape="circle" @click="cancel"></up-button>
             </view>
             <view class="bottom">
-                <up-button text="确认" color="orange" shape="circle" @click="sure"></up-button>
+                <up-button text="确认修改" color="orange" shape="circle" @click="sure"></up-button>
             </view>
         </view>
     </view>
@@ -93,8 +93,12 @@ const uploadImage = () => {
 }
 
 
-onLoad(({ shopId }) => {
+onLoad(({ data, shopId }) => {
+    const goodsDetail = JSON.parse(decodeURIComponent(data))
     goods.shopId = shopId
+    for (const key in goods) {
+        goods[key] = goodsDetail[key]
+    }
 })
 
 const cancel = () => {

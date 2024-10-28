@@ -1,13 +1,9 @@
 import { http } from '@/utils/http'
 
-//添加商铺
-export const addShopAPI = (data: any) => {
+/**获取自身商铺列表 */
+export const selfShopListAPI = () => {
     return http({
-        method: 'POST',
-        url: '/shop/register',
-        data,
-        header: {
-            'Content-Type': 'application/jsonoctet-stream'
-        },
+        method: 'GET',
+        url: '/shop/list/self',
     })
 }

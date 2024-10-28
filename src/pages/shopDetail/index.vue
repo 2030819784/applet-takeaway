@@ -3,37 +3,80 @@
         <view class="goods_price">
             <view class="price">{{ shop.name }}</view>
         </view>
-        <view class="goods_select" v-for="item in goods" :key="item.id">
-            <image style="border-radius: 20rpx" src="../../static/images/zisu.png"></image>
-            <view style="width: 1400rpx; margin-left: 20rpx">
-                <text style="font-size: 40rpx; margin-top: 40rpx">{{ item.name }}</text>
-                <view style="margin-left: 40rpx">
-                    <text>￥ {{ item.price }}</text>
+        <view v-if="goods.length !== 0">
+            <view class="goods_select" v-for="item in goods" :key="item.id" @click="editGoods(item)">
+                <image style="border-radius: 20rpx" :src="item.goodsPhoto"></image>
+                <view style="width: 1400rpx; margin-left: 20rpx">
+                    <text style="font-size: 40rpx; margin-top: 40rpx">{{ item.name }}</text>
+                    <view style="margin-left: 40rpx">
+                        <text>￥ {{ item.price }}</text>
+                    </view>
                 </view>
             </view>
+        </view>
+        <view v-else>
+            <u-empty text="商品为空"></u-empty>
+        </view>
+        <view style="width: 100%;position: fixed;bottom: 20rpx;display: flex;">
+            <button style="
+              margin-top: 10rpx;
+              border-radius: 10rpx;
+              width: 40%;
+              background:orangered;
+            " @click="editShop()">修改商铺</button>
+            <button style="
+              margin-top: 10rpx;
+              border-radius: 10rpx;
+              width: 40%;
+              background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);
+            " @click="addGoods()">添加商品</button>
         </view>
     </view>
 </template>
 
 <script setup lang="ts">
 import { getGoodsListAPI } from '@/services/home'
-import { onLoad } from '@dcloudio/uni-app'
-import { ref, toRaw } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import { ref } from 'vue'
 
 const shop: any = ref({})
 const goods: any = ref([])
+let shopData = {}
 
-// onLoad((option: any) => {
-//     shop.value = JSON.parse(decodeURIComponent(option.data))
-//     console.log(shop.goodsPhoto)
-//     getDetail(shop.value.id)
-// })
+onLoad((option: any) => {
+    shopData = option.data
+    shop.value = JSON.parse(decodeURIComponent(option.data))
+})
+
+onShow(() => {
+    getDetail(shop.value.id)
+})
+
 const getDetail = async (id: string) => {
     const result: any = await getGoodsListAPI(id)
     if (result.code == 200) {
         goods.value = result.data
     }
 }
+
+const editGoods = (item: any) => {
+    uni.navigateTo({
+        url: `/pages/editGoods/index?shopId=${shop.value.id}&data=` + encodeURIComponent(JSON.stringify(item))
+    })
+}
+
+const addGoods = () => {
+    uni.navigateTo({
+        url: '/pages/addGoods/index?shopId=' + shop.value.id
+    })
+}
+
+const editShop = () => {
+    uni.navigateTo({
+        url: `/pages/editShop/index?shopId=${shop.value.id}`
+    })
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -41,7 +84,7 @@ const getDetail = async (id: string) => {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    background-color: #f2f5f5;
+    // background-color: #f2f5f5;
 
     .goods_price {
         margin: 24rpx 24rpx;

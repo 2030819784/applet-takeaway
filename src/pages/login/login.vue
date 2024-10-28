@@ -7,7 +7,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { object } from '@/uni_modules/uv-ui-tools/libs/function/test'
 
 let phoneCode: string = ''
-const memberStore = useMemberStore()
+
 // 获取用户手机号码
 const getphonenumber: UniHelper.ButtonOnGetphonenumber = async (e) => {
   if (e.detail.errMsg!.includes('ok')) {

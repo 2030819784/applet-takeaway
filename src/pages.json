@@ -52,9 +52,25 @@
 			}
 		},
 		{
+			"path": "pages/editGoods/index",
+			"style": {
+				"navigationBarTitleText": "修改商品",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
 			"path": "pages/addShop/index",
 			"style": {
 				"navigationBarTitleText": "添加商铺",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
+			"path": "pages/editShop/index",
+			"style": {
+				"navigationBarTitleText": "修改商铺",
 				"enablePullDownRefresh": false,
 				"navigationBarBackgroundColor": "#e5fdf5"
 			}
