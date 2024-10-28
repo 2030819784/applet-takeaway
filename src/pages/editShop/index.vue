@@ -59,7 +59,6 @@ let tempFilePaths: string[] | string = [];
 const type: any = ref([])
 const index = ref(0)
 
-
 //获取商品分类
 const getCategoryList = async () => {
     const result: any = await getGoodsCategoryListAPI('shop_type')
@@ -83,7 +82,19 @@ onLoad(({ shopId }) => {
 
 const getShopDetail = async (id: string) => {
     const result = await getShopMessageAPI(id)
-    console.log(result)
+    if (result.code === 200) {
+        type.value.forEach((item, ix) => {
+            if (item.id === result.data.typeId) {
+                index.value = ix
+                return
+            }
+        })
+        shop.typeId = result.data.ix
+        for (let key in result.data) {
+            shop[key] = result.data[key]
+        }
+    }
+
 }
 
 const getType = (item: any) => {

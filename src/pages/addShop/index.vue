@@ -118,6 +118,9 @@ const uploadImage = () => {
                 title: '商铺创建成功',
                 icon: 'success'
             })
+            setTimeout(() => {
+                uni.navigateBack()
+            }, 500)
         },
         fail: (fail) => {
             console.log(fail, shop)
