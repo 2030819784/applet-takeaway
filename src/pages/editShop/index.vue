@@ -168,6 +168,11 @@ const deleteShop = async () => {
         setTimeout(() => {
             uni.navigateBack()
         }, 500)
+    } else {
+        uni.showToast({
+            title: result.msg,
+            icon: 'error'
+        })
     }
 }
 </script>
