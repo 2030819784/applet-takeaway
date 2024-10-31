@@ -29,7 +29,10 @@
         </view>
         <view class="footer">
             <view class="bottom">
-                <up-button text="放弃修改" color="red" shape="circle" @click="cancel"></up-button>
+                <up-button text="删除" color="red" shape="circle" @click="deleteShop"></up-button>
+            </view>
+            <view class="bottom">
+                <up-button text="放弃修改" color="green" shape="circle" @click="cancel"></up-button>
             </view>
             <view class="bottom">
                 <up-button text="确认修改" color="orange" shape="circle" @click="sure"></up-button>
@@ -39,6 +42,7 @@
 </template>
 <script lang="ts" setup>
 import { getGoodsCategoryListAPI, getShopMessageAPI } from '@/services/home'
+import { deleteShopAPI } from '@/services/shop';
 import { onLoad } from '@dcloudio/uni-app'
 import { reactive, ref } from 'vue'
 
@@ -152,6 +156,19 @@ const cancel = () => {
 }
 const sure = () => {
     uploadImage()
+}
+
+const deleteShop = async () => {
+    const result = await deleteShopAPI(shop.shopId)
+    if (result.code === 200) {
+        uni.showToast({
+            title: '删除成功',
+            icon: 'success'
+        })
+        setTimeout(() => {
+            uni.navigateBack()
+        }, 500)
+    }
 }
 </script>
 <style lang="scss" scoped>

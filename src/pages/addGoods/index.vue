@@ -82,6 +82,9 @@ const uploadImage = () => {
                 title: '商品添加成功',
                 icon: 'success'
             })
+            setTimeout(() => {
+                uni.navigateBack()
+            }, 500)
         },
         fail: (fail) => {
             uni.showToast({

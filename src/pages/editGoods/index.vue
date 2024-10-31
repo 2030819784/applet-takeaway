@@ -19,7 +19,10 @@
         </view>
         <view class="footer">
             <view class="bottom">
-                <up-button text="放弃修改" color="red" shape="circle" @click="cancel"></up-button>
+                <up-button text="删除" color="red" shape="circle" @click="deleteGoods"></up-button>
+            </view>
+            <view class="bottom">
+                <up-button text="放弃修改" color="green" shape="circle" @click="cancel"></up-button>
             </view>
             <view class="bottom">
                 <up-button text="确认修改" color="orange" shape="circle" @click="sure"></up-button>
@@ -28,6 +31,7 @@
     </view>
 </template>
 <script lang="ts" setup>
+import { deleteGoodsAPI } from '@/services/shop';
 import { onLoad } from '@dcloudio/uni-app';
 import { reactive, ref } from 'vue'
 
@@ -36,10 +40,10 @@ const goods: any = reactive({
     name: '',
     price: undefined,
     isPutaway: 0,
-    shopId: ''
+    id: ''
 })
 
-let tempFilePaths: string[] | string = [];
+let tempFilePaths: string = '';
 
 const putAway = ref("是")
 
@@ -55,7 +59,7 @@ const chooseImage = () => {
             sizeType: ['original', 'compressed'],
             sourceType: ['album', 'camera'],
             success: (res) => {
-                tempFilePaths = res.tempFilePaths
+                tempFilePaths = res.tempFilePaths.toString()
             },
             fail: () => {
                 uni.showToast({
@@ -70,18 +74,20 @@ const chooseImage = () => {
 
 
 const uploadImage = () => {
-    console.log(goods)
     uni.uploadFile({
         url: 'http://localhost:8081/goods/save',
-        filePath: tempFilePaths[0],
+        filePath: tempFilePaths,
         name: 'goodsPhoto',
         formData: goods,
         header: { "Content-Type": "multipart/form-data" },
         success: (result) => {
             uni.showToast({
-                title: '商品添加成功',
+                title: '商品修改成功',
                 icon: 'success'
             })
+            setTimeout(() => {
+                uni.navigateBack()
+            }, 500)
         },
         fail: (fail) => {
             uni.showToast({
@@ -93,12 +99,12 @@ const uploadImage = () => {
 }
 
 
-onLoad(({ data, shopId }) => {
+onLoad(({ data }) => {
     const goodsDetail = JSON.parse(decodeURIComponent(data))
-    goods.shopId = shopId
     for (const key in goods) {
         goods[key] = goodsDetail[key]
     }
+    tempFilePaths = goodsDetail.goodsPhoto
 })
 
 const cancel = () => {
@@ -106,6 +112,19 @@ const cancel = () => {
 }
 const sure = () => {
     uploadImage()
+}
+
+const deleteGoods = async () => {
+    const result = await deleteGoodsAPI(goods.id)
+    if (result.code === 200) {
+        uni.showToast({
+            title: '删除成功',
+            icon: 'success'
+        })
+        setTimeout(() => {
+            uni.navigateBack()
+        }, 500)
+    }
 }
 </script>
 <style lang="scss" scoped>

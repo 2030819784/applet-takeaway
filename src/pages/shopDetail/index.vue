@@ -61,7 +61,7 @@ const getDetail = async (id: string) => {
 
 const editGoods = (item: any) => {
     uni.navigateTo({
-        url: `/pages/editGoods/index?shopId=${shop.value.id}&data=` + encodeURIComponent(JSON.stringify(item))
+        url: `/pages/editGoods/index?data=` + encodeURIComponent(JSON.stringify(item))
     })
 }
 
