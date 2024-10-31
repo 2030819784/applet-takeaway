@@ -59,6 +59,11 @@ const getCategoryList = async () => {
     const list = result.data[0].children
     list1.value = list.map((item: any) => Object.assign(item, { name: item.label }))
     getGoodsListItems(list1.value[0].id)
+  } else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
   }
 }
 //获取商铺列表
@@ -66,6 +71,11 @@ const getGoodsListItems = async (id: number) => {
   const result: any = await getShopListAPI(id)
   if (result.code === 200) {
     resultItems.value = result.data
+  } else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
   }
 }
 // 查询对应分类商铺

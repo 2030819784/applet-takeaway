@@ -100,6 +100,11 @@ const addOrder = async () => {
 				url: '/pages/list/list',
 			})
 		}, 1000)
+	} else {
+		uni.showToast({
+			title: result.msg,
+			icon: 'error'
+		})
 	}
 
 }

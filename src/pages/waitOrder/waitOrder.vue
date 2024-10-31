@@ -77,6 +77,11 @@ const pay = async () => {
         url: '/pages/list/list',
       })
     }, 1000)
+  } else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
   }
 }
 
@@ -103,7 +108,7 @@ const cancelOrder = async () => {
     }, 1000)
   } else {
     uni.showToast({
-      icon: 'fail',
+      icon: 'error',
       title: result.msg,
     })
   }

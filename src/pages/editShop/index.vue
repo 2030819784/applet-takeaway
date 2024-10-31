@@ -68,6 +68,11 @@ const getCategoryList = async () => {
     const result: any = await getGoodsCategoryListAPI('shop_type')
     if (result.code === 200) {
         type.value = result.data[0].children
+    } else {
+        uni.showToast({
+            title: result.msg,
+            icon: 'error'
+        })
     }
 }
 
@@ -97,6 +102,11 @@ const getShopDetail = async (id: string) => {
         for (let key in result.data) {
             shop[key] = result.data[key]
         }
+    } else {
+        uni.showToast({
+            title: result.msg,
+            icon: 'error'
+        })
     }
 
 }

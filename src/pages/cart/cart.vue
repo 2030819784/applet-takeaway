@@ -208,6 +208,11 @@ const getCartList = async () => {
     items.value = result.data.list.filter((item: any) => item.state == 0)
     items.value.forEach((item: any) => (item.scene = false))
     loading.value = true
+  } else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
   }
 }
 
