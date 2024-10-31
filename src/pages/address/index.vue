@@ -10,12 +10,28 @@
 </template>
 
 <script lang="ts" setup>
+import { addressListAPI } from '@/services/address'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 const addressList = ref([])
 
+onShow(() => {
+    getAddressList()
+})
 
+const getAddressList = async () => {
+    const result = await addressListAPI()
+    if (result.code === 200) {
+        console.log(result.data)
+    }
+    else {
+        uni.showToast({
+            title: result.msg,
+            icon: 'error'
+        })
+    }
+}
 </script>
 
 <style lang="scss">

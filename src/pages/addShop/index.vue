@@ -147,7 +147,7 @@ const sure = () => {
 
 const judgeRole = async () => {
     const user = uni.getStorageSync('user')
-    const result = user.roles.some((item) => item.name == 'business')
+    const result = user.roles.some((item) => item.name === 'shoper')
     if (!result) {
         const res = await getUserInfoAPI()
         if (res.code === 200) {

@@ -25,6 +25,8 @@
 </template>
 <script lang="ts" setup>
 import { addRiderAPI } from '@/services/rider'
+import { getUserInfoAPI } from '@/services/user'
+import { useMemberStore } from '@/stores'
 import { ref } from 'vue'
 
 
@@ -55,11 +57,35 @@ const save = async () => {
         })
     }
     const result = await addRiderAPI(shop.name)
+    if (result.code === 200) {
+        judgeRole()
+    }
+    else {
+        uni.showToast({
+            title: result.msg,
+            icon: 'error'
+        })
+    }
 }
 
 const cancel = () => {
     uni.navigateBack()
 }
+
+
+const judgeRole = async () => {
+    const user = uni.getStorageSync('user')
+    const result = user.roles.some((item) => item.name === 'rider')
+    if (!result) {
+        const res = await getUserInfoAPI()
+        if (res.code === 200) {
+            user.roles = res.data.roles
+            const memberStore = useMemberStore()
+            memberStore.setProfile(user)
+        }
+    }
+}
+
 
 </script>
 <style lang="scss" scoped>

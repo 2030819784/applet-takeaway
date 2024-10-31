@@ -64,19 +64,6 @@ export const http = async (options: any) => {
 					uni.navigateTo({
 						url: '/pages/login/login',
 					})
-				} else if (!uni.getStorageSync('address')) {
-					uni.chooseLocation({
-						type: 'gcj02',
-						geocode: true,
-						success: (res) => {
-							uni.setStorageSync('address', {
-								latitude: res.latitude,
-								longitude: res.longitude,
-								name: res.name,
-								address: res.address,
-							})
-						},
-					})
 				}
 				resolve(res.data)
 			},

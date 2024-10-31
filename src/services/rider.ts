@@ -5,6 +5,8 @@ export const addRiderAPI = (name: string) => {
     return http({
         method: 'POST',
         url: '/rider/register',
-        name
+        data: {
+            name
+        }
     })
 }

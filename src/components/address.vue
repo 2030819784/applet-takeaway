@@ -1,27 +1,58 @@
 <template>
-  <view class="address" @click="selectAddres">
+  <view class="address" @click="selectAddress">
     <image src="../../static/images/addresss.png"></image>
-    <view v-if="item">
-      <text class="addressMessage">{{ item.address }}</text>
-      <text class="identity"><text>{{ item.name }}</text><text style="font-weight: 300; margin-left: 20rpx">{{
-        item.phone }}</text></text>
+    <view v-if="show">
+      <text class="addressMessage">{{ address.address }}</text>
+      <text class="identity"><text>{{ address.name }}</text>
+        <text style="font-weight: 300; margin-left: 20rpx">{{
+          address.phone }}</text></text>
     </view>
-    <view v-else>
-      <u-empty text="请选择收货地址"></u-empty>
+    <view v-else style="flex:1;display: flex;justify-content: center;align-items: center;">
+      <text>请选择收货地址</text>
     </view>
   </view>
 </template>
 
 <script lang="ts" setup>
+import { addressListAPI } from '@/services/address'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
-let item = ref()
+const show = ref(false)
+const address = ref({})
+
 onShow(() => {
-  item.value = uni.getStorageSync('userAddress') || {}
+  getAddressList()
 })
 
-const selectAddres = () => {
+const getAddress = () => {
+  const result = uni.getStorageSync('address')
+  if (result) {
+    address.value = result
+    show.value = true
+  }
+  else {
+    getAddressList()
+  }
+}
+
+const getAddressList = async () => {
+  const result = await addressListAPI()
+  if (result.code === 200) {
+    if (result.data.length > 0) {
+      address.value = result.data[0]
+      show.value = true
+    }
+  }
+  else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
+  }
+}
+
+const selectAddress = () => {
   uni.navigateTo({
     url: '/pages/address/index'
   })
@@ -38,6 +69,7 @@ const selectAddres = () => {
   background: white;
   border-radius: 20rpx;
   display: flex;
+  flex-direction: row;
 
   image {
     width: 70rpx;

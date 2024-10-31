@@ -108,6 +108,12 @@
 			}
 		},
 		{
+			"path": "pages/address/index",
+			"style": {
+				"navigationBarTitleText": "地址详情"
+			}
+		},
+		{
 			"path": "pages/goods/goods",
 			"style": {
 				"navigationBarTitleText": "商品详情"
