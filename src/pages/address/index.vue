@@ -1,10 +1,18 @@
 <template>
-    <view class="address" v-for="(item, index) in addressList" :key="index">
-        <image src="../../static/images/addresss.png"></image>
-        <view>
-            <text class="addressMessage">{{ item.address }}</text>
-            <text class="identity"><text>{{ item.name }}</text><text style="font-weight: 300; margin-left: 20rpx">{{
-                item.phone }}</text></text>
+    <view class="main">
+        <scroll-view>
+            <view class="address" v-for="(item, index) in addressList" :key="index">
+                <image src="../../static/images/addresss.png"></image>
+                <view>
+                    <text class="addressMessage">{{ item.address }}</text>
+                    <text class="identity"><text>{{ item.name }}</text><text
+                            style="font-weight: 300; margin-left: 20rpx">{{
+                                item.phone }}</text></text>
+                </view>
+            </view>
+        </scroll-view>
+        <view class="bottom">
+            <up-button text="添加地址" color="green" shape="circle" @click="addAddress"></up-button>
         </view>
     </view>
 </template>
@@ -32,9 +40,22 @@ const getAddressList = async () => {
         })
     }
 }
+
+const addAddress = () => {
+    uni.navigateTo({
+        url: '/pages/addAddress/index'
+    })
+}
+
 </script>
 
 <style lang="scss">
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .address {
     margin: 0 auto;
     margin-top: 50rpx;
@@ -65,5 +86,14 @@ const getAddressList = async () => {
         display: block;
         font-weight: 400;
     }
+}
+
+.bottom {
+    width: 40%;
+    height: 80rpx;
+    margin: 15rpx;
+    position: fixed;
+    bottom: 0;
+
 }
 </style>

@@ -114,6 +114,12 @@
 			}
 		},
 		{
+			"path": "pages/addAddress/index",
+			"style": {
+				"navigationBarTitleText": "添加地址"
+			}
+		},
+		{
 			"path": "pages/goods/goods",
 			"style": {
 				"navigationBarTitleText": "商品详情"
