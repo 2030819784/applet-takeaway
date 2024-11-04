@@ -22,7 +22,7 @@
       <u-empty mode="data"></u-empty>
     </view>
     <view @click="changeToGoodsDetail(item)" class="commodityDes" v-for="item in resultItems" :key="item.id">
-      <image style="border-radius: 20rpx;" src="../../../static/images/xicha.png"></image>
+      <image style="border-radius: 20rpx;" :src="item.shopPhoto"></image>
       <view style="width: 1400rpx">
         <text style="font-size: 40rpx;margin: 40rpx;padding: 40rpx,0;white-space: nowrap;">{{ item.name }}</text>
         <text v-if="item.closeTime"
@@ -85,7 +85,6 @@ const changeCurrent = (item: any) => {
 //跳转到商品详情页面
 const changeToGoodsDetail = (item: any) => {
   const data = toRaw(item)
-  data.goodsPhoto = 'https://cdn.uviewui.com/uview/swiper/swiper3.png'
   uni.navigateTo({
     url: '/pages/shops/shops?data=' + encodeURIComponent(JSON.stringify(data)),
   })

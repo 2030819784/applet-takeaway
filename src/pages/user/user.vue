@@ -53,6 +53,7 @@ import { ref } from 'vue'
 const others = [
   { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
   { state: 1, text: '入驻平台', icon: '/static/user/manage.png' },
+  { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
 ]
 
 const map = new Map([
@@ -120,6 +121,12 @@ const changeToOtherPage = (item: any) => {
   if (item.text === '入驻平台' || item.text === '商铺管理') {
     uni.navigateTo({
       url: '/pages/shop/index'
+    })
+    return
+  }
+  if (item.text === '地址管理') {
+    uni.navigateTo({
+      url: '/pages/address/index'
     })
     return
   }

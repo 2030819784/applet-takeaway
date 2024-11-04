@@ -4,7 +4,7 @@
 		<view class="goods">
 			<view class="item" v-for="item in dataList" :key="item.id">
 				<view class="img-box">
-					<image class="img" :src="item.imgUrl"></image>
+					<image class="img" :src="item.goodsPhoto"></image>
 				</view>
 				<view class="item-right">
 					<text class="right-top">{{ dataDetail.shopName }}</text>

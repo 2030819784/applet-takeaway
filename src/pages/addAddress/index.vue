@@ -2,10 +2,10 @@
     <view class="main">
         <view>
             <up-form labelPosition="left" labelWidth="100px">
-                <up-form-item label="姓名:"><up-input v-model="shop.name"></up-input></up-form-item>
-                <up-form-item label="联系电话:"><up-input v-model="shop.phone"></up-input></up-form-item>
-                <up-form-item label="地址:"><up-input v-model="shop.info"></up-input></up-form-item>
-                <up-form-item label="门牌号:"><up-input v-model="shop.houseNumber"></up-input></up-form-item>
+                <up-form-item label="姓名:"><up-input v-model="address.name"></up-input></up-form-item>
+                <up-form-item label="联系电话:"><up-input v-model="address.phone"></up-input></up-form-item>
+                <up-form-item label="地址:"><up-input v-model="address.info"></up-input></up-form-item>
+                <up-form-item label="门牌号:"><up-input v-model="address.houseNumber"></up-input></up-form-item>
             </up-form>
         </view>
         <view class="footer">
@@ -19,28 +19,27 @@
     </view>
 </template>
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { saveAddressAPI } from '@/services/address'
+import { reactive } from 'vue'
 
 
-const shop: any = reactive({
+const address: any = reactive({
     name: '',
     phone: '',
     info: '',
     houseNumber: '',
 })
-
-let tempFilePaths: string[] | string = [];
-
-const type: any = ref([])
-const index = ref(0)
-
 const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
-
+    saveAddress()
 }
 
+const saveAddress = async () => {
+    address.id = uni.getStorageSync('user').id
+    const result = await saveAddressAPI(address)
+}
 
 
 </script>

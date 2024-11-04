@@ -9,10 +9,11 @@ export const addressListAPI = () => {
 }
 
 /** 保存地址 */
-export const saveAddressAPI = () => {
+export const saveAddressAPI = (address: any) => {
     return http({
         method: 'POST',
         url: '/address/save',
+        addressSaveParam: { ...address }
     })
 }
 

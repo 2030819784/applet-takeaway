@@ -1,20 +1,10 @@
 <template>
 	<view class="goods">
-		<view class="goods_image" :style="{ backgroundImage: `url(${image})` }"
+		<view class="goods_image" :style="{ backgroundImage: `url(${goods.goodsPhoto})` }"
 			style="background-size: cover; background-position: bottom center"></view>
 		<view class="goods_price">
 			<view class="price">{{ goods.shop.name }}</view>
 			<view class="title">{{ goods.name }}</view>
-		</view>
-		<view class="goods_select">
-			<view class="select">
-				<text>选择</text>
-				<view class="select_drop"></view>
-			</view>
-			<view class="address">
-				<text>地址</text>
-				<view class="select_drop"></view>
-			</view>
 		</view>
 		<view class="goods_bottom">
 			<view class="bottom1">
@@ -28,7 +18,7 @@
 		<scroll-view :scroll-y="true">
 			<view style="height: 1000rpx">
 				<view class="top">
-					<img src="../../static/images/xicha2.png" style="height: 200rpx; width: 200rpx; margin: 20rpx" />
+					<img :src="goods.goodsPhoto" style="height: 200rpx; width: 200rpx; margin: 20rpx" />
 					<text>￥<text style="font-size: 60rpx">{{ goods.price }}</text>
 					</text>
 				</view>
@@ -61,8 +51,6 @@ import { ref } from 'vue'
 import Decimal from 'decimal.js'
 
 let goods: any = ref({})
-const image = '../../static/images/goodsBackground.png'
-
 onLoad((option: any) => {
 	goods.value = JSON.parse(decodeURIComponent(option.good))
 })
@@ -96,7 +84,8 @@ const payGoods = async () => {
 		totalPrice: Decimal.mul(goods.value.price, number.value),
 		price: goods.value.price,
 		shopId: goods.value.shop.id,
-		goodsId: goods.value.id
+		goodsId: goods.value.id,
+		goodsPhoto: goods.value.goodsPhoto
 	}
 	uni.navigateTo({
 		url: '/pages/payment/payment?goods=' + encodeURIComponent(JSON.stringify(data)),

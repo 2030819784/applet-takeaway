@@ -1,6 +1,6 @@
 <template>
     <view class="main">
-        <scroll-view>
+        <scroll-view v-if="addressList.length > 0">
             <view class="address" v-for="(item, index) in addressList" :key="index">
                 <image src="../../static/images/addresss.png"></image>
                 <view>
@@ -11,6 +11,9 @@
                 </view>
             </view>
         </scroll-view>
+        <view v-else class="empty" hover-class="none" hover-stop-propagation="false">
+            <u-empty text="地址为空"></u-empty>
+        </view>
         <view class="bottom">
             <up-button text="添加地址" color="green" shape="circle" @click="addAddress"></up-button>
         </view>
@@ -54,6 +57,11 @@ const addAddress = () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.empty {
+    position: relative;
+    top: 300rpx;
 }
 
 .address {
