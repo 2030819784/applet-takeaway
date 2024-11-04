@@ -21,9 +21,14 @@
                     </picker>
                 </up-form-item>
                 <up-form-item label="商铺描述:"><up-input v-model="shop.description"></up-input></up-form-item>
-                <up-form-item label="图片:">
-                    <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
-                        @click="chooseImage"></u-icon>
+                <up-form-item label="商铺图片:">
+                    <view style="display: flex;">
+                        <image v-if="shopPhoto" style="border-radius: 20rpx;width: 200rpx;height: 200rpx;margin: 20rpx;"
+                            :src="shopPhoto"></image>
+                        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
+                            @click="chooseImage">
+                        </u-icon>
+                    </view>
                 </up-form-item>
             </up-form>
         </view>
@@ -55,11 +60,10 @@ const shop: any = reactive({
     restTime: '21:01',
     description: '',
     typeId: '',
-    shopId: ''
+    shopId: '',
 })
 
-let tempFilePaths: string[] | string = [];
-
+const shopPhoto = ref('')
 const type: any = ref([])
 const index = ref(0)
 
@@ -90,7 +94,7 @@ onLoad(({ shopId }) => {
 })
 
 const getShopDetail = async (id: string) => {
-    const result = await getShopMessageAPI(id)
+    const result: any = await getShopMessageAPI(id)
     if (result.code === 200) {
         type.value.forEach((item, ix) => {
             if (item.id === result.data.typeId) {
@@ -99,6 +103,7 @@ const getShopDetail = async (id: string) => {
             }
         })
         shop.typeId = result.data.ix
+        shopPhoto.value = result.data.shopPhoto
         for (let key in result.data) {
             shop[key] = result.data[key]
         }
@@ -123,7 +128,7 @@ const chooseImage = () => {
             sizeType: ['original', 'compressed'],
             sourceType: ['album', 'camera'],
             success: (res) => {
-                tempFilePaths = res.tempFilePaths
+                shopPhoto.value = res.tempFilePaths.toString()
             },
             fail: () => {
                 uni.showToast({
@@ -141,15 +146,18 @@ const uploadImage = () => {
     if (shop.typeId === '') shop.typeId = type.value[0].id
     uni.uploadFile({
         url: 'http://localhost:8081/shop/register',
-        filePath: tempFilePaths[0],
+        filePath: shopPhoto.value,
         name: 'shopPhoto',
         formData: shop,
         header: { "Content-Type": "multipart/form-data" },
         success: (result) => {
             uni.showToast({
-                title: '商铺创建成功',
+                title: '商铺修改成功',
                 icon: 'success'
             })
+            setTimeout(() => {
+                uni.navigateBack()
+            }, 500)
         },
         fail: (fail) => {
             console.log(fail, shop)

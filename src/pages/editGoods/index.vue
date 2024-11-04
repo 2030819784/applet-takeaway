@@ -12,8 +12,13 @@
                     </picker>
                 </up-form-item>
                 <up-form-item label="商品图片:">
-                    <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
-                        @click="chooseImage"></u-icon>
+                    <view style="display: flex;">
+                        <image style="border-radius: 20rpx;width: 200rpx;height: 200rpx;margin: 20rpx;"
+                            :src="goodsPhoto"></image>
+                        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
+                            @click="chooseImage">
+                        </u-icon>
+                    </view>
                 </up-form-item>
             </up-form>
         </view>
@@ -40,10 +45,10 @@ const goods: any = reactive({
     name: '',
     price: undefined,
     isPutaway: 0,
-    id: ''
+    id: '',
 })
 
-let tempFilePaths: string = '';
+const goodsPhoto = ref('')
 
 const putAway = ref("是")
 
@@ -59,7 +64,7 @@ const chooseImage = () => {
             sizeType: ['original', 'compressed'],
             sourceType: ['album', 'camera'],
             success: (res) => {
-                tempFilePaths = res.tempFilePaths.toString()
+                goodsPhoto.value = res.tempFilePaths.toString()
             },
             fail: () => {
                 uni.showToast({
@@ -76,7 +81,7 @@ const chooseImage = () => {
 const uploadImage = () => {
     uni.uploadFile({
         url: 'http://localhost:8081/goods/save',
-        filePath: tempFilePaths,
+        filePath: goodsPhoto.value,
         name: 'goodsPhoto',
         formData: goods,
         header: { "Content-Type": "multipart/form-data" },
@@ -104,7 +109,7 @@ onLoad(({ data }) => {
     for (const key in goods) {
         goods[key] = goodsDetail[key]
     }
-    tempFilePaths = goodsDetail.goodsPhoto
+    goodsPhoto.value = goodsDetail.goodsPhoto
 })
 
 const cancel = () => {

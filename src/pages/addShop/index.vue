@@ -22,8 +22,13 @@
                 </up-form-item>
                 <up-form-item label="商铺描述:"><up-input v-model="shop.description"></up-input></up-form-item>
                 <up-form-item label="图片:">
-                    <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
-                        @click="chooseImage"></u-icon>
+                    <view style="display: flex;">
+                        <image v-if="shopPhoto" style="border-radius: 20rpx;width: 200rpx;height: 200rpx;margin: 20rpx;"
+                            :src="shopPhoto"></image>
+                        <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
+                            @click="chooseImage">
+                        </u-icon>
+                    </view>
                 </up-form-item>
             </up-form>
         </view>
@@ -54,9 +59,7 @@ const shop: any = reactive({
     description: '',
     typeId: '',
 })
-
-let tempFilePaths: string[] | string = [];
-
+const shopPhoto = ref('')
 const type: any = ref([])
 const index = ref(0)
 
@@ -97,7 +100,7 @@ const chooseImage = () => {
             sizeType: ['original', 'compressed'],
             sourceType: ['album', 'camera'],
             success: (res) => {
-                tempFilePaths = res.tempFilePaths
+                shopPhoto.value = res.tempFilePaths.toString()
             },
             fail: () => {
                 uni.showToast({
@@ -115,7 +118,7 @@ const uploadImage = () => {
     if (shop.typeId === '') shop.typeId = type.value[0].id
     uni.uploadFile({
         url: 'http://localhost:8081/shop/register',
-        filePath: tempFilePaths[0],
+        filePath: shopPhoto.value,
         name: 'shopPhoto',
         formData: shop,
         header: { "Content-Type": "multipart/form-data" },
@@ -149,7 +152,7 @@ const judgeRole = async () => {
     const user = uni.getStorageSync('user')
     const result = user.roles.some((item) => item.name === 'shoper')
     if (!result) {
-        const res = await getUserInfoAPI()
+        const res: any = await getUserInfoAPI()
         if (res.code === 200) {
             user.roles = res.data.roles
             const memberStore = useMemberStore()
