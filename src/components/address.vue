@@ -1,11 +1,11 @@
 <template>
   <view class="address" @click="selectAddress">
     <image src="../../static/images/addresss.png"></image>
-    <view v-if="show">
-      <text class="addressMessage">{{ address.address }}</text>
-      <text class="identity"><text>{{ address.name }}</text>
+    <view v-if="address">
+      <text class="addressMessage">{{ address?.info }}</text>
+      <text class="identity"><text>{{ address?.name }}</text>
         <text style="font-weight: 300; margin-left: 20rpx">{{
-          address.phone }}</text></text>
+          address?.phone }}</text></text>
     </view>
     <view v-else style="flex:1;display: flex;justify-content: center;align-items: center;">
       <text>请选择收货地址</text>
@@ -18,31 +18,19 @@ import { addressListAPI } from '@/services/address'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
-const show = ref(false)
-const address = ref({})
+const address = ref()
 
 onShow(() => {
-  getAddressList()
+  const result = uni.getStorageSync('address')
+  if (result) address.value = result
+  else getAddressList()
+  console.log(address.value)
 })
 
-const getAddress = () => {
-  const result = uni.getStorageSync('address')
-  if (result) {
-    address.value = result
-    show.value = true
-  }
-  else {
-    getAddressList()
-  }
-}
-
 const getAddressList = async () => {
-  const result = await addressListAPI()
+  const result: any = await addressListAPI()
   if (result.code === 200) {
-    if (result.data.length > 0) {
-      address.value = result.data[0]
-      show.value = true
-    }
+    address.value = result.data[0]
   }
   else {
     uni.showToast({

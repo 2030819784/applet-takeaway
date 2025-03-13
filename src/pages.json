@@ -120,6 +120,12 @@
 			}
 		},
 		{
+			"path": "pages/editAddress/index",
+			"style": {
+				"navigationBarTitleText": "修改地址"
+			}
+		},
+		{
 			"path": "pages/goods/goods",
 			"style": {
 				"navigationBarTitleText": "商品详情"

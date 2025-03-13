@@ -2,14 +2,20 @@
     <view class="main">
         <view>
             <up-form labelPosition="left" labelWidth="100px">
-                <up-form-item label="商铺名称:"><up-input v-model="shop.name"></up-input></up-form-item>
+                <up-form-item label="商铺名称:"><up-input v-model="shop.name"
+                        placeholder="请输入商铺名称"></up-input></up-form-item>
                 <up-form-item label="商铺类别:">
                     <picker @change="getType" mode='selector' :value="index" :range="type.map(item => item.label)">
                         {{ type[index]?.label }}
                     </picker>
                 </up-form-item>
-                <up-form-item label="联系电话:"><up-input v-model="shop.phone"></up-input></up-form-item>
-                <up-form-item label="商铺配送费:"><up-input v-model="shop.deliveryCost"></up-input></up-form-item>
+                <up-form-item label="联系电话:"><up-input v-model="shop.phone"
+                        placeholder="请输入联系电话"></up-input></up-form-item>
+                <up-form-item label="商铺配送费:">
+                    <picker @change="selectDeliveryCost" mode='selector' :value="shop.deliveryCost" :range="price">
+                        {{ shop.deliveryCost }}
+                    </picker>
+                </up-form-item>
                 <up-form-item label="开业时间:">
                     <picker mode="time" :value="shop.openTime" @change="changeOpenTime">
                         <view class="uni-input">{{ shop.openTime }}</view>
@@ -20,7 +26,8 @@
                         <view class="uni-input">{{ shop.restTime }}</view>
                     </picker>
                 </up-form-item>
-                <up-form-item label="商铺描述:"><up-input v-model="shop.description"></up-input></up-form-item>
+                <up-form-item label="商铺描述:"><up-input v-model="shop.description"
+                        placeholder="请输入商铺描述"></up-input></up-form-item>
                 <up-form-item label="图片:">
                     <view style="display: flex;">
                         <image v-if="shopPhoto" style="border-radius: 20rpx;width: 200rpx;height: 200rpx;margin: 20rpx;"
@@ -53,7 +60,7 @@ import { reactive, ref } from 'vue'
 const shop: any = reactive({
     name: '',
     phone: '',
-    deliveryCost: '',
+    deliveryCost: 0,
     openTime: '09:01',
     restTime: '21:01',
     description: '',
@@ -62,6 +69,7 @@ const shop: any = reactive({
 const shopPhoto = ref('')
 const type: any = ref([])
 const index = ref(0)
+const price = ref(Array.from(new Array(21), (item, index) => item = index))
 
 
 //获取商品分类
@@ -91,6 +99,10 @@ onLoad(() => {
 const getType = (item: any) => {
     index.value = item.detail.value
     shop.typeId = type.value[index.value].id
+}
+
+const selectDeliveryCost = (item: any) => {
+    shop.deliveryCost = item.detail.value
 }
 
 const chooseImage = () => {
@@ -145,6 +157,34 @@ const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
+    if (!shop.name) {
+        uni.showToast({
+            icon: 'error',
+            title: '请输入商铺名称'
+        })
+        return
+    }
+    if (!shop.phone) {
+        uni.showToast({
+            icon: 'error',
+            title: '请输入联系电话'
+        })
+        return
+    }
+    if (!/^1[3-9]\d{9}$|^0\d{2,3}-\d{7,8}$/.test(shop.phone)) {
+        uni.showToast({
+            icon: 'error',
+            title: '手机号格式错误'
+        })
+        return
+    }
+    if (!shopPhoto.value) {
+        uni.showToast({
+            icon: 'error',
+            title: '请上传图片'
+        })
+        return
+    }
     uploadImage()
 }
 

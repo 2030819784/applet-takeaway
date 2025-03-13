@@ -13,7 +13,7 @@ export const saveAddressAPI = (address: any) => {
     return http({
         method: 'POST',
         url: '/address/save',
-        addressSaveParam: { ...address }
+        data: address
     })
 }
 

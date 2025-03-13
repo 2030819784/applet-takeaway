@@ -9,7 +9,11 @@
                     </picker>
                 </up-form-item>
                 <up-form-item label="联系电话:"><up-input v-model="shop.phone"></up-input></up-form-item>
-                <up-form-item label="商铺配送费:"><up-input v-model="shop.deliveryCost"></up-input></up-form-item>
+                <up-form-item label="商铺配送费:">
+                    <picker @change="selectDeliveryCost" mode='selector' :value="shop.deliveryCost" :range="price">
+                        {{ shop.deliveryCost }}
+                    </picker>
+                </up-form-item>
                 <up-form-item label="开业时间:">
                     <picker mode="time" :value="shop.openTime" @change="changeOpenTime">
                         <view class="uni-input">{{ shop.openTime }}</view>
@@ -55,7 +59,7 @@ import { reactive, ref } from 'vue'
 const shop: any = reactive({
     name: '',
     phone: '',
-    deliveryCost: '',
+    deliveryCost: 1,
     openTime: '09:01',
     restTime: '21:01',
     description: '',
@@ -66,6 +70,7 @@ const shop: any = reactive({
 const shopPhoto = ref('')
 const type: any = ref([])
 const index = ref(0)
+const price = ref(Array.from(new Array(21), (item, index) => item = index))
 
 //获取商品分类
 const getCategoryList = async () => {
@@ -121,6 +126,10 @@ const getType = (item: any) => {
     shop.typeId = type.value[index.value].id
 }
 
+const selectDeliveryCost = (item: any) => {
+    shop.deliveryCost = item.detail.value
+}
+
 const chooseImage = () => {
     uni.chooseImage(
         {
@@ -173,6 +182,34 @@ const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
+    if (!shop.name) {
+        uni.showToast({
+            icon: 'error',
+            title: '请输入商铺名称'
+        })
+        return
+    }
+    if (!shop.phone) {
+        uni.showToast({
+            icon: 'error',
+            title: '请输入联系电话'
+        })
+        return
+    }
+    if (!/^1[3-9]\d{9}$|^0\d{2,3}-\d{7,8}$/.test(shop.phone)) {
+        uni.showToast({
+            icon: 'error',
+            title: '手机号格式错误'
+        })
+        return
+    }
+    if (!shopPhoto.value) {
+        uni.showToast({
+            icon: 'error',
+            title: '请上传图片'
+        })
+        return
+    }
     uploadImage()
 }
 

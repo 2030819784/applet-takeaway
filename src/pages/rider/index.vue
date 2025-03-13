@@ -56,7 +56,7 @@ const save = async () => {
             icon: 'error'
         })
     }
-    const result = await addRiderAPI(shop.name)
+    const result: any = await addRiderAPI(shop.name)
     if (result.code === 200) {
         judgeRole()
     }
