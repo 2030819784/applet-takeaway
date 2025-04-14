@@ -1,6 +1,10 @@
 <template>
   <view class="goods">
     <view class="goods_price">
+      <view class="share" @click="sharing">
+        <image src="../../static/images/share.png">
+        </image>
+      </view>
       <view class="price">{{ shop.name }}</view>
     </view>
     <view class="goods_select" v-for="item in goods" :key="item.id" @click="changeToGoodsDetail(item)">
@@ -41,6 +45,13 @@ const changeToGoodsDetail = (item: any) => {
     url: '/pages/goods/goods?good=' + encodeURIComponent(JSON.stringify(data)),
   })
 }
+
+const sharing = () => {
+  uni.navigateTo({
+    url: '/pages/QRcode/QRcode'
+  })
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -56,6 +67,12 @@ const changeToGoodsDetail = (item: any) => {
     height: 164rpx;
     border-radius: 10rpx;
     padding: 15rpx 15rpx;
+
+    .share {
+      position: absolute;
+      width: 40rpx;
+      height: 40rpx;
+    }
 
     .price {
       text-align: center;

@@ -40,7 +40,7 @@ import { reactive, ref } from 'vue'
 
 const goods: any = reactive({
     name: '',
-    price: undefined,
+    price: '',
     isPutaway: 0,
     shopId: '',
 })
@@ -110,6 +110,27 @@ const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
+    if (!goods.name) {
+        uni.showToast({
+            icon: 'error',
+            title: '请输入商品名称'
+        })
+        return
+    }
+    if (!goods.price) {
+        uni.showToast({
+            icon: 'error',
+            title: '请输入商品单价'
+        })
+        return
+    }
+    if (!/^(?:[1-9]\d*(?:\.\d+)?|0\.(?!0\d)[\d]+)$/.test(goods.price)) {
+        uni.showToast({
+            icon: 'error',
+            title: '单价输入不合法'
+        })
+        return
+    }
     uploadImage()
 }
 </script>
