@@ -17,3 +17,19 @@ export const getOrderListAPI = (acceptStatus: number) => {
         url: `/rider/orderList?acceptStatus=${acceptStatus}`,
     })
 }
+
+//接单
+export const getOrderAPI = (orderId: string) => {
+    return http({
+        method: 'POST',
+        url: `/rider/acceptOrder?orderId=${orderId}`,
+    })
+}
+
+//送达
+export const setOrderAPI = (orderId: string) => {
+    return http({
+        method: 'POST',
+        url: `/rider/completeOrder?orderId=${orderId}`,
+    })
+}

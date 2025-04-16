@@ -114,16 +114,10 @@ onShow(() => {
 
   memberStore.profile.roles.forEach(item => {
     if (item.name === 'rider') {
-      others = [
-        { state: 0, text: '前往接单', icon: '/static/user/takeOrder.png' },
-        { state: 2, text: '地址管理', icon: '/static/user/address.png' },
-      ]
+      others[0].text = '前往接单'
     }
     if (item.name === 'shoper') {
-      others = [
-        { state: 1, text: '商铺管理', icon: '/static/user/registe.png' },
-        { state: 2, text: '地址管理', icon: '/static/user/address.png' },
-      ]
+      others[1].text = '商铺管理'
     }
   })
   list2.value = others

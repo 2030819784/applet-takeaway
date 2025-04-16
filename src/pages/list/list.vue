@@ -76,34 +76,40 @@ const tabsList1 = [
     status: 1,
   },
   {
+    state: 'ZZWC',
+    name: '制作完成',
+    status: 2,
+  },
+  {
     state: 'PSZ',
     name: '配送中',
-    status: 2,
+    status: 3,
   },
   {
     state: 'YSD',
     name: '已送达',
-    status: 3,
+    status: 4,
   },
   {
     state: 'YWC',
     name: '已完成',
-    status: 4,
+    status: 5,
   },
   {
     state: 'DDQX',
     name: '订单取消',
-    status: 5,
+    status: 6,
   },
 ]
 
 const map = new Map([
   [0, '未付款'],
   [1, '制作中'],
-  [2, '配送中'],
-  [3, '已送达'],
-  [4, '已完成'],
-  [5, '订单取消'],
+  [2, '制作完成'],
+  [3, '配送中'],
+  [4, '已送达'],
+  [5, '已完成'],
+  [6, '订单取消'],
 ])
 //根据用户权限判断tab
 const select = () => {

@@ -111,9 +111,11 @@ const addOrder = async () => {
 
 
 const addCaiYangOrder = async () => {
+	let addressId = uni.getStorageSync('address').id
 	const goodsData = {
 		shopId: dataDetail.shopId,
-		orderSubmitDetailList: toRaw(dataList.value)
+		orderSubmitDetailList: toRaw(dataList.value),
+		addressId
 	}
 	const result: any = await submitAPI(goodsData)
 	if (result.code === 200) {
