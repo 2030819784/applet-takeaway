@@ -33,3 +33,11 @@ export const setOrderAPI = (orderId: string) => {
         url: `/rider/completeOrder?orderId=${orderId}`,
     })
 }
+
+//注销骑手
+export const deleteRiderAPI = () => {
+    return http({
+        method: 'POST',
+        url: `/rider/delete`,
+    })
+}

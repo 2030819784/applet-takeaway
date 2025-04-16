@@ -24,7 +24,7 @@
                     <view v-for="item in order.orderListDetailList" :key="item.id" style="margin:0 20rpx;">
                         {{ item.name }}: {{ item.number }}
                     </view>
-                    <text>
+                    <text v-if="status === 1">
                         须在{{ addHalfHour(order.takeOrderTime) }}前送达
                     </text>
                 </view>
@@ -33,7 +33,7 @@
                         总价： <text style="font-weight: 400;">{{ order.totalPrice }}</text></text>
                     <button v-if="status !== 2" class="button" @click="deal(order.id)">{{ status === 0 ? '接单' : status
                         === 1 && '送达'
-                        }}</button>
+                    }}</button>
                 </view>
             </view>
         </view>

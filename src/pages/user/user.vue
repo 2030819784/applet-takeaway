@@ -8,8 +8,9 @@
           </view>
           <view>
             <view class="userTypes">
-              <view v-for="(item, index) in memberStore.profile.roles" :key="index" class="userType">{{ item.description
-              }}</view>
+              <view @click="cancelRole(item)" v-for="(item, index) in memberStore.profile.roles" :key="index"
+                class="userType">{{ item.description
+                }}</view>
             </view>
           </view>
         </view>
@@ -46,7 +47,9 @@
 </template>
 
 <script setup lang="ts">
-import { useMemberStore, } from '@/stores'
+import { deleteRiderAPI } from '@/services/rider'
+import { getUserInfoAPI } from '@/services/user'
+import { useMemberStore } from '@/stores'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
@@ -111,8 +114,13 @@ onShow(() => {
       url: '/pages/login/login',
     })
   }
+  sureRole()
 
-  memberStore.profile.roles.forEach(item => {
+})
+
+
+const sureRole = () => {
+  memberStore.profile.roles.forEach((item: any) => {
     if (item.name === 'rider') {
       others[0].text = '前往接单'
     }
@@ -129,8 +137,51 @@ onShow(() => {
     { state: 3, text: '配送中', icon: '/static/user/dealing.png', status: 3 },
     { state: 4, text: '已送达', icon: '/static/user/send.png', status: 4 },
     { state: 5, text: '已完成', icon: '/static/user/complete.png', status: 5 },
-    { state: 6, text: '订单取消', icon: '/static/user/cancel.png', status: 6 },]
-})
+    { state: 6, text: '订单取消', icon: '/static/user/cancel.png', status: 6 }
+  ]
+}
+
+const cancelRole = (item: any) => {
+  if (item.name === 'rider') {
+    uni.showModal({
+      title: '提示',
+      content: '是否注销骑手',
+      success: function (res) {
+        if (res.confirm) {
+          deleteRider()
+        }
+      }
+    });
+
+  }
+}
+
+const deleteRider = async () => {
+  const res: any = await deleteRiderAPI()
+  if (res.code === 200) {
+    uni.showToast({
+      icon: 'success',
+      title: '注销成功'
+    })
+    const res: any = await getUserInfoAPI()
+    if (res.code === 200) {
+      const user = uni.getStorageSync('user')
+      user.roles = res.data.roles
+      const memberStore = useMemberStore()
+      memberStore.setProfile(user)
+      sureRole()
+      uni.reLaunch({
+        url: '/pages/user/user'
+      })
+    }
+  } else {
+    uni.showToast({
+      title: '注销失败',
+      icon: 'error'
+    })
+  }
+}
+
 </script>
 <style lang="scss" scoped>
 .viewport {
