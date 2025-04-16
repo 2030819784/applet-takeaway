@@ -51,9 +51,9 @@ import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
 let others = [
-  { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
-  { state: 1, text: '入驻平台', icon: '/static/user/manage.png' },
-  { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
+  { state: 0, text: '成为骑手', icon: '/static/user/takeOrder.png' },
+  { state: 1, text: '入驻平台', icon: '/static/user/registe.png' },
+  { state: 2, text: '地址管理', icon: '/static/user/address.png' },
 ]
 
 
@@ -115,26 +115,27 @@ onShow(() => {
   memberStore.profile.roles.forEach(item => {
     if (item.name === 'rider') {
       others = [
-        { state: 0, text: '前往接单', icon: '/static/user/manage.png' },
-        { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
+        { state: 0, text: '前往接单', icon: '/static/user/takeOrder.png' },
+        { state: 2, text: '地址管理', icon: '/static/user/address.png' },
       ]
     }
     if (item.name === 'shoper') {
       others = [
-        { state: 1, text: '商铺管理', icon: '/static/user/manage.png' },
-        { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
+        { state: 1, text: '商铺管理', icon: '/static/user/registe.png' },
+        { state: 2, text: '地址管理', icon: '/static/user/address.png' },
       ]
     }
   })
   list2.value = others
 
-  list1.value = [{ state: 0, text: '未付款', icon: '/static/user/toBePaid.png', status: 0 },
-  { state: 1, text: '制作中', icon: '/static/user/payment.png', status: 1 },
-  { state: 2, text: '制作完成', icon: '/static/user/complete.png', status: 2 },
-  { state: 3, text: '配送中', icon: '/static/user/complete.png', status: 3 },
-  { state: 4, text: '已送达', icon: '/static/user/complete.png', status: 4 },
-  { state: 5, text: '已完成', icon: '/static/user/complete.png', status: 5 },
-  { state: 6, text: '订单取消', icon: '/static/user/complete.png', status: 6 },]
+  list1.value = [
+    { state: 0, text: '未付款', icon: '/static/user/waitPay.png', status: 0 },
+    { state: 1, text: '制作中', icon: '/static/user/creating.png', status: 1 },
+    { state: 2, text: '制作完成', icon: '/static/user/done.png', status: 2 },
+    { state: 3, text: '配送中', icon: '/static/user/dealing.png', status: 3 },
+    { state: 4, text: '已送达', icon: '/static/user/send.png', status: 4 },
+    { state: 5, text: '已完成', icon: '/static/user/complete.png', status: 5 },
+    { state: 6, text: '订单取消', icon: '/static/user/cancel.png', status: 6 },]
 })
 </script>
 <style lang="scss" scoped>
