@@ -100,6 +100,14 @@
 			}
 		},
 		{
+			"path": "pages/takeOrder/index",
+			"style": {
+				"navigationBarTitleText": "接单",
+				"enablePullDownRefresh": false,
+				"navigationBarBackgroundColor": "#e5fdf5"
+			}
+		},
+		{
 			"path": "pages/user/user",
 			"style": {
 				"navigationStyle": "custom",

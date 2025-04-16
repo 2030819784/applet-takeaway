@@ -9,7 +9,7 @@
           <view>
             <view class="userTypes">
               <view v-for="(item, index) in memberStore.profile.roles" :key="index" class="userType">{{ item.description
-                }}</view>
+              }}</view>
             </view>
           </view>
         </view>
@@ -50,47 +50,13 @@ import { useMemberStore, } from '@/stores'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 
-const others = [
+let others = [
   { state: 0, text: '成为骑手', icon: '/static/user/manage.png' },
   { state: 1, text: '入驻平台', icon: '/static/user/manage.png' },
   { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
 ]
 
-const map = new Map([
-  [
-    'user',
-    {
-      text: '用户',
-      orderTypes: [
-        { state: 0, text: '未付款', icon: '/static/user/toBePaid.png', status: 0 },
-        { state: 1, text: '配送中', icon: '/static/user/payment.png', status: 2 },
-        { state: 2, text: '已完成', icon: '/static/user/complete.png', status: 4 },
-        { state: 3, text: '已取消', icon: '/static/user/complete.png', status: 5 },
-      ],
-    }],
-  [
-    'rider',
-    {
-      text: '骑手',
-      orderTypes: [
-        { state: 4, text: '配送中', icon: '/static/rider/payment.png', status: 2 },
-        { state: 5, text: '已送达', icon: '/static/rider/complete.png', status: 3 },
-        { state: 6, text: '已取消', icon: '/static/user/complete.png', status: 5 },
-      ],
-    }],
-  [
-    'shoper', {
-      text: '商家',
-      orderTypes: [
-        { state: 7, text: '制作中', icon: '/static/rider/toBeReceived.png', status: 1 },
-        { state: 8, text: '配送中', icon: '/static/rider/payment.png', status: 2 },
-        { state: 9, text: '已送达', icon: '/static/rider/complete.png', status: 3 },
-        { state: 10, text: '已完成', icon: '/static/rider/complete.png', status: 4 },
-        { state: 11, text: '已取消', icon: '/static/user/complete.png', status: 5 },
-      ]
-    },
-  ],
-])
+
 // 获取个人信息
 const memberStore = useMemberStore()
 
@@ -118,6 +84,12 @@ const changeToOtherPage = (item: any) => {
     })
     return
   }
+  if (item.text === '前往接单') {
+    uni.navigateTo({
+      url: '/pages/takeOrder/index'
+    })
+    return
+  }
   if (item.text === '入驻平台' || item.text === '商铺管理') {
     uni.navigateTo({
       url: '/pages/shop/index'
@@ -131,13 +103,7 @@ const changeToOtherPage = (item: any) => {
     return
   }
 }
-const hasExit = (list1, target) => {
-  for (let i = 0; i < list1.length; i++) {
-    if (list1[i].text === target.text)
-      return false
-  }
-  return true
-}
+
 
 onShow(() => {
   if (!memberStore.profile.roles) {
@@ -147,27 +113,28 @@ onShow(() => {
   }
 
   memberStore.profile.roles.forEach(item => {
-    if (item.name === 'shoper') others[1].text = '商铺管理'
-    if (item.name === 'rider') others.splice(0, 1)
+    if (item.name === 'rider') {
+      others = [
+        { state: 0, text: '前往接单', icon: '/static/user/manage.png' },
+        { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
+      ]
+    }
+    if (item.name === 'shoper') {
+      others = [
+        { state: 1, text: '商铺管理', icon: '/static/user/manage.png' },
+        { state: 2, text: '地址管理', icon: '/static/user/manage.png' },
+      ]
+    }
   })
   list2.value = others
 
-  if (memberStore.profile.roles.length === 1) {
-    list1.value = map.get(memberStore.profile.roles[0].name)?.orderTypes
-  }
-  else {
-    const temp1: any = []
-    memberStore.profile.roles.forEach((item: any) => {
-
-      map.get(item.name)!.orderTypes.forEach((value) => {
-        if (hasExit(temp1, value)) {
-          temp1.push(value)
-        }
-      })
-    })
-    list1.value = temp1
-
-  }
+  list1.value = [{ state: 0, text: '未付款', icon: '/static/user/toBePaid.png', status: 0 },
+  { state: 1, text: '制作中', icon: '/static/user/payment.png', status: 1 },
+  { state: 2, text: '制作完成', icon: '/static/user/complete.png', status: 2 },
+  { state: 3, text: '配送中', icon: '/static/user/complete.png', status: 3 },
+  { state: 4, text: '已送达', icon: '/static/user/complete.png', status: 4 },
+  { state: 5, text: '已完成', icon: '/static/user/complete.png', status: 5 },
+  { state: 6, text: '订单取消', icon: '/static/user/complete.png', status: 6 },]
 })
 </script>
 <style lang="scss" scoped>

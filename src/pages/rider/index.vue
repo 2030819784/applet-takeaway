@@ -2,15 +2,17 @@
     <view class="main">
         <view>
             <up-form labelPosition="left" labelWidth="100px">
-                <up-form-item label="姓名:"><up-input v-model="shop.name"></up-input></up-form-item>
-                <up-form-item label="性别:">
-                    <picker @change="getType" mode='selector' :value="index" :range="type">
-                        {{ type[index] }}
-                    </picker>
+                <up-form-item label="姓名:"><up-input v-model="message.name"></up-input></up-form-item>
+                <up-form-item label="身份证号:"><up-input v-model="message.idCard"></up-input></up-form-item>
+                <up-form-item label="人脸图片:">
+                    <view style="display: flex;">
+                        <image v-if="photo" style="border-radius: 20rpx;width: 200rpx;height: 200rpx;margin: 20rpx;"
+                            :src="photo">
+                        </image>
+                        <u-icon width="52rpx" height="52rpx" :name="image" @click="chooseImage">
+                        </u-icon>
+                    </view>
                 </up-form-item>
-                <up-form-item label="年龄:"><up-input v-model="shop.deliveryCost"></up-input></up-form-item>
-                <up-form-item label="联系电话:"><up-input v-model="shop.phone"></up-input></up-form-item>
-                <up-form-item label="地址:"><up-input v-model="shop.openTime"></up-input></up-form-item>
             </up-form>
         </view>
         <view class="footer">
@@ -24,48 +26,86 @@
     </view>
 </template>
 <script lang="ts" setup>
-import { addRiderAPI } from '@/services/rider'
+// import { addRiderAPI } from '@/services/rider'
 import { getUserInfoAPI } from '@/services/user'
 import { useMemberStore } from '@/stores'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import image from '../../static/home/upload.png'
 
 
-const shop: any = {
+const message: any = {
     name: '',
-    phone: '',
-    deliveryCost: '',
-    openTime: '',
-    restTime: '',
-    description: '',
-    photo: [],
-    typeId: '',
+    userId: '',
+    idCard: ''
 }
 
-const type: any = ref(['男', '女'])
-const index = ref(0)
+const photo = ref('')
 
-const getType = (item: any) => {
-    index.value = item.detail.value
-    shop.typeId = type.value[index.value].id
+const chooseImage = () => {
+    uni.chooseImage(
+        {
+            count: 1,
+            sizeType: ['original', 'compressed'],
+            sourceType: ['album', 'camera'],
+            success: (res) => {
+                photo.value = res.tempFilePaths.toString()
+            },
+            fail: () => {
+                uni.showToast({
+                    icon: 'error',
+                    title: '图片选择失败',
+                })
+            }
+        },
+
+    )
 }
+
+
+const uploadImage = () => {
+    uni.uploadFile({
+        url: 'http://localhost:8081/rider/register',
+        filePath: photo.value,
+        name: 'goodsPhoto',
+        formData: message,
+        header: { "Content-Type": "multipart/form-data" },
+        success: (result) => {
+            uni.showToast({
+                title: '骑手注册成功',
+                icon: 'success'
+            })
+            judgeRole()
+            setTimeout(() => {
+                uni.navigateBack()
+            }, 500)
+        },
+        fail: (fail) => {
+            uni.showToast({
+                icon: 'error',
+                title: '图片上传失败',
+            })
+        },
+    })
+}
+
 
 const save = async () => {
-    if (shop.name === '') {
+    if (message.name === '') {
         uni.showToast({
             title: '请填写姓名',
             icon: 'error'
         })
+        return
     }
-    const result: any = await addRiderAPI(shop.name)
-    if (result.code === 200) {
-        judgeRole()
-    }
-    else {
+
+    if (message.idCard === '') {
         uni.showToast({
-            title: result.msg,
+            title: '请填写身份证号',
             icon: 'error'
         })
+        return
     }
+    uploadImage()
 }
 
 const cancel = () => {
@@ -75,9 +115,9 @@ const cancel = () => {
 
 const judgeRole = async () => {
     const user = uni.getStorageSync('user')
-    const result = user.roles.some((item) => item.name === 'rider')
+    const result = user.roles.some((item: any) => item.name === 'rider')
     if (!result) {
-        const res = await getUserInfoAPI()
+        const res: any = await getUserInfoAPI()
         if (res.code === 200) {
             user.roles = res.data.roles
             const memberStore = useMemberStore()

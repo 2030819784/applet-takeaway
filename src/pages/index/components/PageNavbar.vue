@@ -6,17 +6,15 @@
     </view>
     <!-- 搜索条 -->
     <view class="search">
-      <view class="search_input">
+      <!-- <view class="search_input">
         <view class="line"></view>
         <input type="text" v-model="search" class="input" />
-      </view>
-      <view class="search_scan">
+      </view> -->
+      <!-- <view class="search_scan">
         <u-icon width="52rpx" height="52rpx" name="../../../../static/home/search.png" @click="scanCode"></u-icon>
-      </view>
+      </view> -->
       <view class="search_scan">
         <u-icon width="52rpx" height="52rpx" name="../../../../static/home/scan.png" @click="scanCode"></u-icon>
-        <!-- <u-icon  width="52rpx" height="52rpx"
-          name="../../../../static/home/add.png" @click="addGoods"></u-icon> -->
       </view>
     </view>
   </view>
@@ -33,22 +31,12 @@ onShow(() => {
   address.value = uni.getStorageSync('address').name
 })
 
-let search: string = ''
-
 const scanCode = () => {
   uni.navigateTo({
     url: '/pages/scanCode/scanCode',
   })
 }
-const select = () => {
 
-}
-
-const addGoods = () => {
-  uni.navigateTo({
-    url: '/pages/addGoods/index',
-  })
-}
 
 </script>
 
@@ -83,6 +71,7 @@ const addGoods = () => {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-direction: row-reverse;
     padding: 0 10rpx 0 26rpx;
     margin: 16rpx 8rpx;
     height: 64rpx;

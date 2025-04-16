@@ -10,3 +10,10 @@ export const addRiderAPI = (name: string) => {
         }
     })
 }
+//接单列表
+export const getOrderListAPI = (acceptStatus: number) => {
+    return http({
+        method: 'POST',
+        url: `/rider/orderList?acceptStatus=${acceptStatus}`,
+    })
+}

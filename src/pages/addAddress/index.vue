@@ -37,6 +37,42 @@ const cancel = () => {
     uni.navigateBack()
 }
 const sure = () => {
+    if (address.name === '') {
+        uni.showToast({
+            title: '请填写姓名',
+            icon: 'error'
+        })
+        return
+    }
+    if (address.photo === '') {
+        uni.showToast({
+            title: '请填写手机号',
+            icon: 'error'
+        })
+        return
+    }
+    if (!/^1[3-9]\d{9}$|^0\d{2,3}-\d{7,8}$/.test(address.phone)) {
+        uni.showToast({
+            icon: 'error',
+            title: '手机号格式错误'
+        })
+        return
+    }
+    if (address.info === '') {
+        uni.showToast({
+            title: '请填写地址',
+            icon: 'error'
+        })
+        return
+    }
+    if (address.houseNumber === '') {
+        uni.showToast({
+            title: '请填写门牌号',
+            icon: 'error'
+        })
+        return
+    }
+
     saveAddress()
 }
 

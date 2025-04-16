@@ -29,7 +29,7 @@ const goods: any = ref([])
 
 onLoad((option: any) => {
   shop.value = JSON.parse(decodeURIComponent(option.data))
-  console.log(shop.goodsPhoto)
+  console.log(shop.value, '1111')
   getDetail(shop.value.id)
 })
 const getDetail = async (id: string) => {
@@ -48,7 +48,7 @@ const changeToGoodsDetail = (item: any) => {
 
 const sharing = () => {
   uni.navigateTo({
-    url: '/pages/QRcode/QRcode'
+    url: '/pages/QRcode/QRcode?data=' + encodeURIComponent(JSON.stringify(shop.value))
   })
 }
 

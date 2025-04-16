@@ -12,6 +12,9 @@ onReady(() => {
       scanType = res.scanType
       result = res.result
       console.log(scanType, result)
+      uni.navigateTo({
+        url: '/pages/shops/shops?data=' + result,
+      })
     },
     fail: function () {
       uni.navigateBack()

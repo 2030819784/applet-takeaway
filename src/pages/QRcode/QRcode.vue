@@ -1,13 +1,7 @@
 <template>
   <view class="total">
     <view class="qrcode">
-      <uv-qrcode
-        ref="qrcode"
-        size="400rpx"
-        :options="options"
-        :value="value"
-        @complete="complete"
-      ></uv-qrcode>
+      <uv-qrcode ref="qrcode" size="400rpx" :options="options" :value="value" @complete="complete"></uv-qrcode>
     </view>
     <view class="setting">
       <button @click="saveQRcode" class="buttonStyle">
@@ -18,19 +12,18 @@
 </template>
 
 <script lang="ts" setup>
+import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 const options = {
   foregroundImageSrc: '',
 }
-
-const data = {
-  name: '123',
-  price: 200,
-  number: 10,
-  address: 'XXXXXX',
-}
-const value = JSON.stringify(data)
+const value = ref('')
 const qrcode = ref()
+
+onLoad((option: any) => {
+  value.value = option.data
+})
+
 
 let scene: boolean = false
 

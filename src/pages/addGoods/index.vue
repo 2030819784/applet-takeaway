@@ -49,7 +49,7 @@ const goodsPhoto = ref('')
 
 const putAway = ref("是")
 
-const getPutAway = (item: number) => {
+const getPutAway = (item: any) => {
     putAway.value = item.detail.value === "0" ? "否" : "是"
     goods.isPutaway = Number(item.detail.value)
 }
