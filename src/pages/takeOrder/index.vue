@@ -31,7 +31,8 @@
                 <view style="margin-left: 40rpx;margin-top: 20rpx;display: flex;">
                     <text style="font-weight: 100">总量：<text style="font-weight: 400;">{{ order.totalNumber }}</text> ;
                         总价： <text style="font-weight: 400;">{{ order.totalPrice }}</text></text>
-                    <button v-if="status !== 2" class="button" @click="deal(order.id)">{{ status === 0 ? '接单' : status
+                    <button v-if="status === 0 || status === 1" class="button" @click="deal(order.id)">{{ status === 0 ?
+                        '接单' : status
                         === 1 && '送达'
                     }}</button>
                 </view>
@@ -59,6 +60,10 @@ const list1 = ref([
     {
         name: '已完成',
         status: 2
+    },
+    {
+        name: '超时订单',
+        status: 3
     }
 ])
 const status = ref(0)
@@ -124,6 +129,7 @@ const setOrder = async (id: string) => {
             icon: 'success',
             title: '成功送达'
         })
+        getGoodsListItems(1)
     } else {
         uni.showToast({
             title: '送达失败',
