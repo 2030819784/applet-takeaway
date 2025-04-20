@@ -105,6 +105,12 @@ const changeToOtherPage = (item: any) => {
     })
     return
   }
+  if (item.text === '分类管理') {
+    uni.navigateTo({
+      url: '/pages/labelList/index'
+    })
+    return
+  }
 }
 
 
@@ -126,6 +132,9 @@ const sureRole = () => {
     }
     if (item.name === 'shoper') {
       others[1].text = '商铺管理'
+    }
+    if (item.name === 'admin') {
+      others.push({ state: 3, text: '分类管理', icon: '/static/user/label.png' },)
     }
   })
   list2.value = others

@@ -15,6 +15,24 @@ export const getGoodsCategoryListAPI = (data: string) => {
     url: `/dict/list?type=${data}`,
   })
 }
+//新增商品分类
+export const addGoodsCategoryAPI = (data: any) => {
+  return http({
+    method: 'POST',
+    url: '/dict/save',
+    data
+  })
+}
+//删除商品分类
+export const deleteGoodsCategoryListAPI = (data: string) => {
+  return http({
+    method: 'GET',
+    url: `/dict/delete?id=${data}`,
+  })
+}
+
+
+
 //根据分类id获取商铺列表---
 export const getShopListAPI = (id: number) => {
   return http({

@@ -128,6 +128,18 @@
 			}
 		},
 		{
+			"path": "pages/labelList/index",
+			"style": {
+				"navigationBarTitleText": "分类管理"
+			}
+		},
+		{
+			"path": "pages/addType/index",
+			"style": {
+				"navigationBarTitleText": "添加分类"
+			}
+		},
+		{
 			"path": "pages/editAddress/index",
 			"style": {
 				"navigationBarTitleText": "修改地址"
