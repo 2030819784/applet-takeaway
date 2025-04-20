@@ -48,7 +48,7 @@ const deleteLabel = async (id: string) => {
     const res: any = await deleteGoodsCategoryListAPI(id)
     if (res.code === 200) {
         uni.showToast({
-            title: '删除成',
+            title: '删除成功',
             icon: 'success'
         })
         getLabelList()
