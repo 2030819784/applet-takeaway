@@ -51,13 +51,13 @@ import { deleteRiderAPI } from '@/services/rider'
 import { getUserInfoAPI } from '@/services/user'
 import { useMemberStore } from '@/stores'
 import { onShow } from '@dcloudio/uni-app'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 
-let others = [
+const others = reactive([
   { state: 0, text: '成为骑手', icon: '/static/user/takeOrder.png' },
   { state: 1, text: '入驻平台', icon: '/static/user/registe.png' },
   { state: 2, text: '地址管理', icon: '/static/user/address.png' },
-]
+])
 
 
 // 获取个人信息
