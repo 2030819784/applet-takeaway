@@ -41,3 +41,12 @@ export const deleteRiderAPI = () => {
         url: `/rider/delete`,
     })
 }
+
+//认证
+export const certificationRiderAPI = (data: any) => {
+    return http({
+        method: 'POST',
+        url: `/rider/certification`,
+        data
+    })
+}

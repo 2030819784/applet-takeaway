@@ -32,3 +32,13 @@ export const cancelOrderAPI = (orderId: string) => {
     url: `/order/cancel/${orderId}`,
   })
 }
+
+
+//制作中订单修改地址
+export const updateOrderAPI = (data: any) => {
+  return http({
+    method: 'POST',
+    url: '/order/update/address',
+    data
+  })
+}

@@ -49,6 +49,7 @@ const chooseImage = () => {
             sourceType: ['album', 'camera'],
             success: (res) => {
                 photo.value = res.tempFilePaths.toString()
+                console.log(photo.value, '11111111')
             },
             fail: () => {
                 uni.showToast({
@@ -66,7 +67,7 @@ const uploadImage = () => {
     uni.uploadFile({
         url: 'http://localhost:8081/rider/register',
         filePath: photo.value,
-        name: 'goodsPhoto',
+        name: 'photo',
         formData: message,
         header: { "Content-Type": "multipart/form-data" },
         success: (result) => {

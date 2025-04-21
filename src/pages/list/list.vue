@@ -44,21 +44,27 @@
               <text>￥{{ item.price }}</text>
             </view>
           </view>
+          <view v-if="i.status === 1" @click="editAddress(i)"
+            style="width: 100%;height: 40rpx;text-align: right; margin-top: 20rpx;color: red;">
+            修改地址
+          </view>
         </view>
       </view>
     </view>
+    <uni-popup ref="alertDialog" type="dialog" :maskClick='false'>
+      <uni-popup-dialog confirmText="确认付款" :content=deliveryFee @confirm="addOrder"></uni-popup-dialog>
+    </uni-popup>
   </view>
 </template>
 
 <script setup lang="ts">
 import PageNavbar from './PageNavbar.vue'
-import { getuserOrderListAPI } from '@/services/order'
+import { getuserOrderListAPI, paymentAPI, submitAPI, updateOrderAPI } from '@/services/order'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 //用户类型
 const user = uni.getStorageSync('user')
 const tabsList = ref()
-
 const current = ref(0)
 //普通用户 商家
 const tabsList1 = [
@@ -102,6 +108,8 @@ const tabsList1 = [
   },
 ]
 
+
+
 const map = new Map([
   [0, '未付款'],
   [1, '制作中'],
@@ -117,6 +125,77 @@ const select = () => {
     tabsList.value = tabsList1.filter((item) => item.status === 0)
   else tabsList.value = tabsList1
 }
+
+const editAddress = (data: any) => {
+  uni.setStorageSync('editOrder', data)
+  uni.navigateTo({
+    url: '/pages/address/index'
+  })
+}
+
+
+const deliveryFee = ref('本次付款')
+
+onShow(() => {
+  const data = uni.getStorageSync('editOrder')
+  if (data && data.deliveryFee) {
+    if (data.deliveryFee) {
+      if (data.deliveryFee == 0) {
+        uni.removeStorageSync('editOrder')
+      }
+      else {
+        deliveryFee.value = '本次付款' + data.deliveryFee + '元'
+        updateOrderAddress({
+          "addressId": data.addressListDTO.id,
+          "deliveryFee": data.deliveryFee,
+          "orderId": data.id
+        })
+
+      }
+    }
+    else {
+      uni.removeStorageSync('editOrder')
+    }
+  }
+})
+//控制付费弹出框
+const alertDialog = ref()
+
+// 更改地址
+const updateOrderAddress = async (data: any) => {
+  const res: any = await updateOrderAPI(data)
+  if (res.code == 200) {
+    alertDialog.value.open()
+  }
+  else {
+    uni.showToast({
+      icon: 'error',
+      title: res.msg
+    })
+  }
+}
+
+const addOrder = async () => {
+  const data = uni.getStorageSync('editOrder')
+  const result: any = await paymentAPI(data.id)
+  if (result.code === 200) {
+    uni.showToast({
+      icon: 'success',
+      title: '付款成功',
+    })
+    uni.removeStorageSync('editOrder')
+    alertDialog.value.close()
+  } else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
+  }
+
+}
+
+
+
 //切换订单状态
 const changeCurrent = (item: any) => {
   getuserOrderList(item.status)

@@ -38,6 +38,36 @@
                 </view>
             </view>
         </view>
+        <uni-popup ref="certificationDialog" type="dialog" :maskClick='false'>
+            <view
+                style="width: 600rpx;background: white;border-radius: 40rpx;display: flex;flex-direction: column;align-items: center;">
+                <text style=" font-size: 20px;padding: 20rpx;">
+                    人脸比对
+                </text>
+                <up-form style="padding: 20rpx;" labelPosition="left" labelWidth="160rpx">
+                    <up-form-item label="姓名:"><up-input v-model="certification.name" placeholder="请输入真实姓名">
+                        </up-input>
+                    </up-form-item>
+                    <up-form-item label="身份证号:"><up-input v-model="certification.idCard" placeholder="请输入身份证号">
+                        </up-input>
+                    </up-form-item>
+                    <up-form-item label="证件照:">
+                        <view style="display: flex;">
+                            <image v-if="photo" style="border-radius: 20rpx;width: 200rpx;height: 200rpx;margin: 20rpx;"
+                                :src="photo"></image>
+                            <u-icon width="52rpx" height="52rpx" name="../../../../static/home/upload.png"
+                                @click="chooseImage">
+                            </u-icon>
+                        </view>
+                    </up-form-item>
+                </up-form>
+                <view style="display: flex;justify-content: space-around;width: 100%;margin-top: 40rpx;">
+                    <button
+                        style="background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);flex: 1;border-radius: 0 0 40rpx 40rpx; color: white;"
+                        @click="uploadImage">确认</button>
+                </view>
+            </view>
+        </uni-popup>
     </view>
 </template>
 
@@ -45,6 +75,7 @@
 
 import { getOrderListAPI, getOrderAPI, setOrderAPI } from '@/services/rider'
 import { onShow } from '@dcloudio/uni-app'
+import { nextTick } from 'process'
 
 import { ref } from 'vue'
 //首页商品分类
@@ -67,6 +98,68 @@ const list1 = ref([
     }
 ])
 const status = ref(0)
+
+const certification = ref({
+    name: '',
+    idCard: ''
+})
+
+const certificationDialog = ref()
+
+
+onShow(() => {
+    nextTick(() => {
+        certificationDialog.value.open()
+    })
+})
+
+const chooseImage = () => {
+
+    uni.chooseImage(
+        {
+            count: 1,
+            sizeType: ['original', 'compressed'],
+            sourceType: ['camera'],
+            success: (res) => {
+                photo.value = res.tempFilePaths.toString()
+            },
+            fail: () => {
+                uni.showToast({
+                    icon: 'error',
+                    title: '图片选择失败',
+                })
+            }
+        },
+
+    )
+}
+
+
+const uploadImage = () => {
+    uni.uploadFile({
+        url: 'http://localhost:8081/rider/certification',
+        filePath: photo.value,
+        name: 'photo',
+        formData: certification.value,
+        header: { "Content-Type": "multipart/form-data" },
+        success: () => {
+            uni.showToast({
+                title: '实名认证成功',
+                icon: 'success'
+            })
+            certificationDialog.value.close()
+        },
+        fail: (fail) => {
+            uni.showToast({
+                icon: 'error',
+                title: '实名认证失败',
+            })
+        },
+    })
+}
+
+
+const photo = ref('')
 
 //接收返回的单子列表
 const resultItems = ref()

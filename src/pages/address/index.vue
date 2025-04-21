@@ -32,10 +32,13 @@
 
 <script lang="ts" setup>
 import { addressListAPI } from '@/services/address'
-import { onShow } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import Decimal from 'decimal.js'
 import { ref } from 'vue'
 
 const addressList = ref([])
+
+const type = ref(null)
 
 onShow(() => {
     getAddressList()
@@ -61,8 +64,31 @@ const addAddress = () => {
 }
 
 const selected = (item: any) => {
-    console.log(item)
     uni.setStorageSync('address', item)
+    if (uni.getStorageSync('editOrder')) {
+        //  更换了地址
+        const storage = uni.getStorageSync('editOrder')
+        if (storage.addressListDTO.info !== item.info) {
+            const data = uni.getStorageSync('editOrder')
+            data.addressListDTO = item
+            data.deliveryFee = 5
+            uni.setStorageSync('editOrder', data)
+        }
+        else {
+            const data = uni.getStorageSync('editOrder')
+            //更换了楼层
+
+            if (data.addressListDTO.floor < item.floor) {
+                const first = new Decimal(item.floor)
+                const second = new Decimal(data.addressListDTO.floor)
+                data.addressListDTO = item
+
+                data.deliveryFee = first.sub(second).mul(new Decimal(0.5))
+
+                uni.setStorageSync('editOrder', data)
+            }
+        }
+    }
     uni.navigateBack()
 }
 
