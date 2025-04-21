@@ -61,6 +61,7 @@ const addAddress = () => {
 }
 
 const selected = (item: any) => {
+    console.log(item)
     uni.setStorageSync('address', item)
     uni.navigateBack()
 }

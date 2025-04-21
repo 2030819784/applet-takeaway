@@ -8,6 +8,11 @@
                         placeholder="请输入手机号"></up-input></up-form-item>
                 <up-form-item label="地址:"><up-input v-model="address.info"
                         placeholder="请输入地址"></up-input></up-form-item>
+                <up-form-item label="楼层:">
+                    <picker @change="selectFloor" mode='selector' :value="address.floor" :range="floorList">
+                        {{ address.floor }}
+                    </picker>
+                </up-form-item>
                 <up-form-item label="门牌号:"><up-input v-model="address.houseNumber"
                         placeholder="请输入门牌号"></up-input></up-form-item>
             </up-form>
@@ -24,7 +29,7 @@
 </template>
 <script lang="ts" setup>
 import { saveAddressAPI } from '@/services/address'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 
 
 const address: any = reactive({
@@ -32,10 +37,19 @@ const address: any = reactive({
     phone: '',
     info: '',
     houseNumber: '',
+    floor: 1
 })
+
+const floorList = ref(Array.from(new Array(21), (item, index) => item = index))
+
 const cancel = () => {
     uni.navigateBack()
 }
+
+const selectFloor = (item: any) => {
+    address.floor = item.detail.value
+}
+
 const sure = () => {
     if (address.name === '') {
         uni.showToast({
@@ -61,6 +75,13 @@ const sure = () => {
     if (address.info === '') {
         uni.showToast({
             title: '请填写地址',
+            icon: 'error'
+        })
+        return
+    }
+    if (!address.floor) {
+        uni.showToast({
+            title: '请填写楼层',
             icon: 'error'
         })
         return

@@ -24,7 +24,6 @@ onShow(() => {
   const result = uni.getStorageSync('address')
   if (result) address.value = result
   else getAddressList()
-  console.log(address.value)
 })
 
 const getAddressList = async () => {

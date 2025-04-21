@@ -18,9 +18,9 @@ export const saveAddressAPI = (address: any) => {
 }
 
 /** 删除地址 */
-export const deleteAddressAPI = () => {
+export const deleteAddressAPI = (id: string) => {
     return http({
         method: 'POST',
-        url: '/address/delete',
+        url: `/address/delete?id=${id}`,
     })
 }

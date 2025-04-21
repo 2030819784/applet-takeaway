@@ -21,13 +21,14 @@
 		</view>
 		<view style="height: 100rpx"> </view>
 		<view class="bottom">
-			<view style="margin-left: 100rpx">
+			<view style="margin-left: 50rpx">
 				<text style="font-weight: 300">共 {{ dataDetail.totalNumber }} 件 </text><text>合计：<text
 						style="color: red; font-size: 24rpx">￥<text style="font-size: 40rpx">{{ totalPrice }}</text>
 					</text>
 				</text>
 			</view>
-			<button @click="addCaiYangOrder">提交订单</button>
+			<button @click="submitOrder">提交订单</button>
+			<button @click="pindan" style="width: 100rpx;">拼</button>
 		</view>
 	</view>
 
@@ -35,10 +36,30 @@
 		<uni-popup-dialog cancelText="放弃" confirmText="确认付款" content="是否确认本次付款？" @confirm="addOrder"
 			@close="dialogClose"></uni-popup-dialog>
 	</uni-popup>
+
+	<uni-popup ref="pindanDialog" type="dialog">
+		<view
+			style="width: 600rpx;height: 320rpx;background: white;border-radius: 40rpx;display: flex;flex-direction: column;align-items: center;">
+			<text style=" font-size: 20px;padding: 20rpx;">
+				拼单
+			</text>
+			<up-form style="padding: 20rpx;" labelPosition="left" labelWidth="160rpx">
+				<up-form-item label="手机号:"><up-input v-model="pindanPhone" placeholder="请输入要拼单的手机号">
+					</up-input>
+				</up-form-item>
+			</up-form>
+			<view style="display: flex;justify-content: space-around;width: 100%;margin-top: 40rpx;">
+				<button style="flex: 1;border-radius: 0 0  0 40rpx ;" @click="() => pindanDialog.close()">取消</button>
+				<button
+					style="background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);flex: 1;border-radius: 0 0 40rpx 0; color: white;"
+					@click="addPindanOrder">确认</button>
+			</view>
+		</view>
+	</uni-popup>
 </template>
 
 <script lang="ts" setup>
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { ref, toRaw } from 'vue'
 import type { goodsListType } from '@/types/payment'
 import { submitAPI, paymentAPI } from '@/services/order'
@@ -79,12 +100,20 @@ onLoad(async (options) => {
 	dataDetail.totalPrice = new Decimal(data.totalPrice)
 	dataDetail.price = data.price
 	dataDetail.address = data.address
-	totalPrice.value = new Decimal(dataDetail.totalPrice)
+	totalPrice.value = new Decimal(dataDetail.totalPrice).add(2).add(new Decimal((uni.getStorageSync('address').floor || 1 - 1) * 0.5))
 })
 
+onShow(() => {
+	totalPrice.value = new Decimal(dataDetail.totalPrice).add(2).add(new Decimal((uni.getStorageSync('address').floor || 1 - 1) * 0.5))
+})
 
-//控制弹出框
+const pindanPhone = ref<string | null>(null)
+
+//控制付费弹出框
 const alertDialog = ref()
+
+//控制拼单弹出框
+const pindanDialog = ref()
 
 const orderId = ref('null')
 
@@ -110,13 +139,15 @@ const addOrder = async () => {
 }
 
 
-const addCaiYangOrder = async () => {
+const submitOrder = async () => {
 	let addressId = uni.getStorageSync('address').id
-	const goodsData = {
+	const goodsData: any = {
 		shopId: dataDetail.shopId,
 		orderSubmitDetailList: toRaw(dataList.value),
-		addressId
+		addressId,
+		deliveryFee: new Decimal((uni.getStorageSync('address').floor || 1 - 1) * 0.5).add(2)
 	}
+	if (pindanPhone.value) goodsData.groupPhone = pindanPhone.value
 	const result: any = await submitAPI(goodsData)
 	if (result.code === 200) {
 		alertDialog.value.open()
@@ -129,6 +160,27 @@ const addCaiYangOrder = async () => {
 		})
 	}
 }
+
+const pindan = () => {
+	pindanDialog.value.open()
+}
+
+const addPindanOrder = () => {
+	if (!pindanPhone.value) {
+		pindanDialog.value.close()
+		return
+	}
+
+	if (!/^1[3-9]\d{9}$|^0\d{2,3}-\d{7,8}$/.test(pindanPhone.value as string)) {
+		uni.showToast({
+			icon: 'error',
+			title: '手机号格式错误'
+		})
+		return
+	}
+	pindanDialog.value.close()
+}
+
 
 const dialogClose = () => {
 	const item = {
@@ -266,7 +318,7 @@ const dialogClose = () => {
 		button {
 			background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);
 			border-radius: 40rpx;
-			width: 240rpx;
+			width: 200rpx;
 			height: 70rpx;
 			text-align: center;
 			line-height: 70rpx;
