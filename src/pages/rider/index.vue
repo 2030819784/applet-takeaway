@@ -105,6 +105,13 @@ const save = async () => {
         })
         return
     }
+    if (!/^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(message.idCard)) {
+        uni.showToast({
+            title: '格式不正确',
+            icon: 'error'
+        })
+        return
+    }
     uploadImage()
 }
 
