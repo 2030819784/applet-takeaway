@@ -48,6 +48,7 @@
 
 <script setup lang="ts">
 import { deleteRiderAPI } from '@/services/rider'
+import { deleteShopRoleAPI } from '@/services/shop'
 import { getUserInfoAPI } from '@/services/user'
 import { useMemberStore } from '@/stores'
 import { onShow } from '@dcloudio/uni-app'
@@ -166,12 +167,50 @@ const cancelRole = (item: any) => {
         }
       }
     });
-
+    return
+  }
+  if (item.name === 'shoper') {
+    uni.showModal({
+      title: '提示',
+      content: '是否注销商铺',
+      success: function (res) {
+        if (res.confirm) {
+          deleteShop()
+        }
+      }
+    });
+    return
   }
 }
 
 const deleteRider = async () => {
   const res: any = await deleteRiderAPI()
+  if (res.code === 200) {
+    uni.showToast({
+      icon: 'success',
+      title: '注销成功'
+    })
+    const res: any = await getUserInfoAPI()
+    if (res.code === 200) {
+      const user = uni.getStorageSync('user')
+      user.roles = res.data.roles
+      const memberStore = useMemberStore()
+      memberStore.setProfile(user)
+      sureRole()
+      uni.reLaunch({
+        url: '/pages/user/user'
+      })
+    }
+  } else {
+    uni.showToast({
+      title: '注销失败',
+      icon: 'error'
+    })
+  }
+}
+
+const deleteShop = async () => {
+  const res: any = await deleteShopRoleAPI()
   if (res.code === 200) {
     uni.showToast({
       icon: 'success',

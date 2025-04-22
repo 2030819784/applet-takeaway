@@ -23,3 +23,13 @@ export const deleteShopAPI = (id: string) => {
         url: '/shop/delete?id=' + id,
     })
 }
+
+/** 注销商铺 */
+export const deleteShopRoleAPI = () => {
+    return http({
+        method: 'POST',
+        url: '/shop/delete/role',
+    })
+}
+
+

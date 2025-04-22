@@ -42,3 +42,12 @@ export const updateOrderAPI = (data: any) => {
     data
   })
 }
+
+//完成商品制作
+export const completeGoodsAPI = (id: string) => {
+  return http({
+    method: 'POST',
+    url: `/shop/completeGoods?orderId=${id}`,
+
+  })
+}

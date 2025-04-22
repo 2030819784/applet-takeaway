@@ -44,28 +44,34 @@
               <text>￥{{ item.price }}</text>
             </view>
           </view>
-          <view v-if="i.status === 1" @click="editAddress(i)"
-            style="width: 100%;height: 40rpx;text-align: right; margin-top: 20rpx;color: red;">
-            修改地址
+          <view style="width: 100%;display: flex;">
+            <view v-if="isShowComplete && current === 2" @click="openCompleteDialog(i.id)"
+              style="flex: 1;height: 40rpx;text-align: left; margin-top: 20rpx;color: green;">
+              制作完成
+            </view>
+            <view v-if="i.status === 1" @click="editAddress(i)"
+              style="flex: 1;height: 40rpx;text-align: right; margin-top: 20rpx;color: red;">
+              修改地址
+            </view>
           </view>
         </view>
       </view>
     </view>
-<!--    <uni-popup ref="alertDialog" type="dialog"  :maskClick='false'>
-      <uni-popup-dialog confirmText="确认付款" :content=deliveryFee @confirm="addOrder"></uni-popup-dialog>
-    </uni-popup> -->
-    <uni-popup ref="alertDialog" type="dialog"  :maskClick='false'>
-    	<view
-    		style="width: 600rpx;background: white;border-radius: 40rpx;display: flex;flex-direction: column;align-items: center;">
-        <text style="display: block;margin: 140rpx;font-size: 22px;white-space: nowrap">{{deliveryFee}}</text>
-    		<view style="display: flex;justify-content: space-around;width: 100%;">
-    			<button
-    				style="background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);flex: 1;border-radius: 0 0 40rpx 40rpx; color: white;"
-    				@click="addOrder">确认</button>
-    		</view>
-    	</view>
-    </uni-popup>
 
+    <uni-popup ref="alertDialog" type="dialog" :maskClick='false'>
+      <view
+        style="width: 600rpx;background: white;border-radius: 40rpx;display: flex;flex-direction: column;align-items: center;">
+        <text style="display: block;margin: 140rpx;font-size: 22px;white-space: nowrap">{{ deliveryFee }}</text>
+        <view style="display: flex;justify-content: space-around;width: 100%;">
+          <button
+            style="background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);flex: 1;border-radius: 0 0 40rpx 40rpx; color: white;"
+            @click="addOrder">确认</button>
+        </view>
+      </view>
+    </uni-popup>
+    <uni-popup ref="completeDialog" type="dialog">
+      <uni-popup-dialog confirmText="确认" content="确认制作完成吗?" @confirm="complete"></uni-popup-dialog>
+    </uni-popup>
 
 
   </view>
@@ -73,11 +79,13 @@
 
 <script setup lang="ts">
 import PageNavbar from './PageNavbar.vue'
-import { getuserOrderListAPI, paymentAPI, submitAPI, updateOrderAPI } from '@/services/order'
+import { completeGoodsAPI, getuserOrderListAPI, paymentAPI, updateOrderAPI } from '@/services/order'
 import { onShow } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 //用户类型
 const user = uni.getStorageSync('user')
+const isShowComplete = ref(user.roles.some((item: any) => item.name === 'shoper'))
+
 const tabsList = ref()
 const current = ref(0)
 //普通用户 商家
@@ -159,14 +167,14 @@ onShow(() => {
   select()
   const status = uni.getStorageSync('orderStatus')
 
-  if(status){
-    current.value=status
+  if (status) {
+    current.value = status
     changeSelect(status)
     getuserOrderList(status)
     uni.removeStorageSync('orderStatus')
   }
 
-  else{
+  else {
     current.value = 0
     getuserOrderList()
   }
@@ -194,6 +202,17 @@ onShow(() => {
 })
 //控制付费弹出框
 const alertDialog = ref()
+
+const completeDialog = ref()
+
+//完成制作的订单id
+const orderId = ref()
+
+const openCompleteDialog = (id: string) => {
+  orderId.value = id
+  completeDialog.value.open()
+}
+
 
 // 更改地址
 const updateOrderAddress = async (data: any) => {
@@ -228,10 +247,25 @@ const addOrder = async () => {
 
 }
 
-
+const complete = async () => {
+  const result: any = await completeGoodsAPI(orderId.value)
+  if (result.code === 200) {
+    uni.showToast({
+      icon: 'success',
+      title: '状态变更成功',
+    })
+    getuserOrderList(1)
+  } else {
+    uni.showToast({
+      title: result.msg,
+      icon: 'error'
+    })
+  }
+}
 
 //切换订单状态
 const changeCurrent = (item: any) => {
+  current.value = item.status + 1
   getuserOrderList(item.status)
 }
 let orderList = ref()
@@ -319,5 +353,4 @@ const changeSelect = (status: string) => {
     }
   }
 }
-
 </style>
