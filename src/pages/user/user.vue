@@ -52,6 +52,7 @@ import { deleteShopRoleAPI } from '@/services/shop'
 import { getUserInfoAPI } from '@/services/user'
 import { useMemberStore } from '@/stores'
 import { onShow } from '@dcloudio/uni-app'
+import { nextTick } from 'process'
 import { ref } from 'vue'
 
 let others = [
@@ -122,7 +123,6 @@ onShow(() => {
     })
   }
   sureRole()
-
 })
 
 
@@ -143,7 +143,9 @@ const sureRole = () => {
       others.push({ state: 3, text: '分类管理', icon: '/static/user/label.png' },)
     }
   })
-  list2.value = others
+  nextTick(() => {
+    list2.value = others
+  })
 
   list1.value = [
     { state: 0, text: '未付款', icon: '/static/user/waitPay.png', status: 0 },
@@ -172,7 +174,7 @@ const cancelRole = (item: any) => {
   if (item.name === 'shoper') {
     uni.showModal({
       title: '提示',
-      content: '是否注销商铺',
+      content: '是否注销商家',
       success: function (res) {
         if (res.confirm) {
           deleteShop()
