@@ -142,12 +142,23 @@ const uploadImage = () => {
         name: 'photo',
         formData: certification.value,
         header: { "Content-Type": "multipart/form-data" },
-        success: () => {
+        success: (res:any) => {
+          const data=JSON.parse(res.data)
+          if(data.code==200){
             uni.showToast({
                 title: '实名认证成功',
                 icon: 'success'
             })
             certificationDialog.value.close()
+          }
+
+          else{
+            uni.showToast({
+                icon: 'error',
+                title: data.msg||'实名认证失败',
+            })
+          }
+
         },
         fail: (fail) => {
             uni.showToast({

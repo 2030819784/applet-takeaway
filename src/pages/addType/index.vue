@@ -27,7 +27,7 @@ import { reactive } from 'vue'
 
 const label: any = reactive({
     label: '',
-    parentId: '4fa1736cd6213e0ebb6ea656bf857233',
+    parentId: 'shop_type',
     remark: '',
     type: 'shop_type'
 })

@@ -1,6 +1,6 @@
 <template>
     <view class="list">
-        <view v-for="item in labelList" class="item">
+        <view v-for="item in labelList" :key=item.id class="item">
             <view style="flex:1;text-align: center;line-height:100rpx ;">
                 <text>
                     {{ item.label }}
