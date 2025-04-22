@@ -57,7 +57,7 @@
     <uni-popup ref="alertDialog" type="dialog"  :maskClick='false'>
     	<view
     		style="width: 600rpx;background: white;border-radius: 40rpx;display: flex;flex-direction: column;align-items: center;">
-        <text style="display: block;margin: 140rpx;font-size: 22px;">{{deliveryFee}}</text>
+        <text style="display: block;margin: 140rpx;font-size: 22px;white-space: nowrap">{{deliveryFee}}</text>
     		<view style="display: flex;justify-content: space-around;width: 100%;">
     			<button
     				style="background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);flex: 1;border-radius: 0 0 40rpx 40rpx; color: white;"
