@@ -82,9 +82,7 @@ const selected = (item: any) => {
                 const first = new Decimal(item.floor)
                 const second = new Decimal(data.addressListDTO.floor)
                 data.addressListDTO = item
-
                 data.deliveryFee = first.sub(second).mul(new Decimal(0.5))
-
                 uni.setStorageSync('editOrder', data)
             }
         }

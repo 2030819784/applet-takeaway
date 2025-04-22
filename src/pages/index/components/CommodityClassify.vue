@@ -12,7 +12,7 @@
           paddingRight: '15px',
           height: '50px',
           fontSize: '28rpx',
-        }" :inactiveStyle="{ color: '#000000', fontSize: '28rpx' }" @click="changeCurrent"></u-tabs>
+        }" :inactiveStyle="{ color: '#000000', fontSize: '28rpx' }" @click="changeCurrent" :current="current"></u-tabs>
       </u-sticky>
     </view>
     <!-- <view v-if="list1?.length == 0">
@@ -49,6 +49,8 @@ import { ref, toRaw } from 'vue'
 //首页商品分类
 const list1 = ref()
 
+const current=ref(0)
+
 //接收返回的商铺列表
 const resultItems = ref()
 
@@ -58,7 +60,7 @@ const getCategoryList = async () => {
   if (result.code === 200) {
     const list = result.data[0].children
     list1.value = list.map((item: any) => Object.assign(item, { name: item.label }))
-    getGoodsListItems(list1.value[0].id)
+    getGoodsListItems(list1.value[current.value].id)
   } else {
     uni.showToast({
       title: result.msg,

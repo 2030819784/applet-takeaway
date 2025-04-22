@@ -51,9 +51,23 @@
         </view>
       </view>
     </view>
-    <uni-popup ref="alertDialog" type="dialog" :maskClick='false'>
+<!--    <uni-popup ref="alertDialog" type="dialog"  :maskClick='false'>
       <uni-popup-dialog confirmText="确认付款" :content=deliveryFee @confirm="addOrder"></uni-popup-dialog>
+    </uni-popup> -->
+    <uni-popup ref="alertDialog" type="dialog"  :maskClick='false'>
+    	<view
+    		style="width: 600rpx;background: white;border-radius: 40rpx;display: flex;flex-direction: column;align-items: center;">
+        <text style="display: block;margin: 140rpx;font-size: 22px;">{{deliveryFee}}</text>
+    		<view style="display: flex;justify-content: space-around;width: 100%;">
+    			<button
+    				style="background: linear-gradient(229deg, #1bc172 0%, #43d180 100%);flex: 1;border-radius: 0 0 40rpx 40rpx; color: white;"
+    				@click="addOrder">确认</button>
+    		</view>
+    	</view>
     </uni-popup>
+
+
+
   </view>
 </template>
 
@@ -134,9 +148,29 @@ const editAddress = (data: any) => {
 }
 
 
-const deliveryFee = ref('本次付款')
+const deliveryFee = ref('本次需付款')
 
 onShow(() => {
+  if (!user) {
+    uni.navigateTo({
+      url: '/pages/login/login',
+    })
+  }
+  select()
+  const status = uni.getStorageSync('orderStatus')
+
+  if(status){
+    current.value=status
+    changeSelect(status)
+    getuserOrderList(status)
+    uni.removeStorageSync('orderStatus')
+  }
+
+  else{
+    current.value = 0
+    getuserOrderList()
+  }
+
   const data = uni.getStorageSync('editOrder')
   if (data && data.deliveryFee) {
     if (data.deliveryFee) {
@@ -144,7 +178,7 @@ onShow(() => {
         uni.removeStorageSync('editOrder')
       }
       else {
-        deliveryFee.value = '本次付款' + data.deliveryFee + '元'
+        deliveryFee.value = '本次需付款' + data.deliveryFee + '元'
         updateOrderAddress({
           "addressId": data.addressListDTO.id,
           "deliveryFee": data.deliveryFee,
@@ -222,18 +256,7 @@ const changeSelect = (status: string) => {
     }
   });
 }
-onShow(() => {
-  if (!user) {
-    uni.navigateTo({
-      url: '/pages/login/login',
-    })
-  }
-  select()
-  const status = uni.getStorageSync('orderStatus')
-  status ? changeSelect(status) : current.value = 0
-  status ? getuserOrderList(status) : getuserOrderList()
-  status && uni.removeStorageSync('orderStatus')
-})
+
 </script>
 <style lang="scss" scoped>
 .bg-top {
@@ -296,4 +319,5 @@ onShow(() => {
     }
   }
 }
+
 </style>

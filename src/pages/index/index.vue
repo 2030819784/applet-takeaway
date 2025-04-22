@@ -30,7 +30,7 @@ import CommodityClassify from './components/CommodityClassify.vue'
 }
 
 .top {
-  height: 528rpx;
+  height: 600rpx;
   background: linear-gradient(180deg, #4fc185 0%, #49b97f 100%);
 }
 
